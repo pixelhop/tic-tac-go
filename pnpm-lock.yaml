@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@fontsource/orbitron': ^4.5.11
   '@vitejs/plugin-vue': ^4.0.0
   autoprefixer: ^10.4.13
   postcss: ^8.4.21
@@ -11,6 +12,7 @@ specifiers:
   vue-tsc: ^1.0.11
 
 dependencies:
+  '@fontsource/orbitron': 4.5.11
   vue: 3.2.45
 
 devDependencies:
@@ -244,6 +246,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@fontsource/orbitron/4.5.11:
+    resolution: {integrity: sha512-OClxk3btSUtbvH+LKk3JSO95Ly88lJZjODRgUY2yLVOVBhR/i7u3xlj9j0SUmIYQAFn21jrMX5+zbS5IfIP9YQ==}
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
