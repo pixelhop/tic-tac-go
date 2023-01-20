@@ -5,10 +5,12 @@ const props = withDefaults(
   defineProps<{
     theme?: 'primary' | 'secondary';
     as?: 'button' | 'router-link';
+    disabled?: boolean;
   }>(),
   {
     theme: 'primary',
     as: 'button',
+    disabled: false,
   }
 );
 
@@ -18,7 +20,13 @@ const classes = computed(() => {
     secondary: 'border-white hover:bg-white hover:bg-opacity-10',
   };
 
-  return classMap[props.theme];
+  let theClasses = `${classMap[props.theme]}`;
+
+  if (props.disabled) {
+    theClasses += ' opacity-50';
+  }
+
+  return theClasses;
 });
 </script>
 
@@ -26,7 +34,7 @@ const classes = computed(() => {
   <component
     v-bind="$attrs"
     :is="as"
-    class="font-medium text-sm text-white border uppercase px-4 py-1 transition-colors appearance-none text-center"
+    class="font-medium text-sm text-white border uppercase px-4 py-1 transition-colors appearance-none text-center flex items-center justify-center"
     :class="classes"
     ><slot></slot
   ></component>
