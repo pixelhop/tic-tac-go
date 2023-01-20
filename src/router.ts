@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from './pages/Home.vue';
+import PageHome from './pages/PageHome.vue';
+import PageNewGame from './pages/PageNewGame.vue';
 
 const routes = [
-  { path: "/", component: Home },
+  { path: '/', component: PageHome },
+  { path: '/new-game', component: PageNewGame },
 ];
 
 // 3. Create the router instance and pass the `routes` option
