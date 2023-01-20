@@ -53,12 +53,13 @@ export const useGameStore = defineStore('game', () => {
     channel.value.on('broadcast', { event: 'player-1-ready' }, () => {
       player1Ready.value = true;
     });
+
     channel.value.on('broadcast', { event: 'player-2-ready' }, () => {
       player2Ready.value = true;
       router.push('/game');
     });
 
-    channel.value.on('broadcast', { event: 'grid' }, (event: { payload: { grid: ('x' | '0' | undefined)[] } }) => {
+    channel.value.on('broadcast', { event: 'grid' }, (event) => {
       console.log('Update grid');
       console.log({ event });
       console.log(event.payload.grid);
