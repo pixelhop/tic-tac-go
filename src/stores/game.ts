@@ -56,7 +56,7 @@ export const useGameStore = defineStore('game', () => {
       separator: '-',
       length: 3,
     });
-    isHost.value = true;
+    isPlayer1.value = true;
     router.push('/waiting');
     connect();
   }
@@ -68,7 +68,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   return {
-    isHost,
+    isPlayer1,
     player1Name,
     player1Connected,
     player2Name,
