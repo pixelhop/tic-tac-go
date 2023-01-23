@@ -9,7 +9,12 @@ const { grid } = storeToRefs(store);
 
 <template>
   <div class="relative">
-    <svg class="relative z-10 pointer-events-none" viewBox="0 0 345 342" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      class="relative z-10 pointer-events-none w-full"
+      viewBox="0 0 345 342"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g id="Grid">
         <g id="Grid_2">
           <mask
