@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import Modal from '../Modal.vue';
 import Button from '../Button.vue';
+import { useGameStore } from '../../stores/game';
+
+const { ready } = useGameStore();
 </script>
 
 <template>
@@ -16,7 +19,7 @@ import Button from '../Button.vue';
     </div>
 
     <div class="flex justify-center">
-      <Button>I'm ready</Button>
+      <Button @click="ready">I'm ready</Button>
     </div>
   </Modal>
 </template>

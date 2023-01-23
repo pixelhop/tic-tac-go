@@ -11,6 +11,8 @@
   "dependencies": {
     "@fontsource/orbitron": "^4.5.11",
     "@supabase/supabase-js": "^2.4.1",
+    "@vueuse/core": "^9.11.1",
+    "dayjs": "^1.11.7",
     "pinia": "^2.0.29",
     "unique-names-generator": "^4.7.1",
     "vee-validate": "^4.7.3",

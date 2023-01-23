@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia';
+import dayjs from 'dayjs';
 import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '../supabase';
+
+type GameState = 'waiting-for-players' | 'instructions' | 'countdown' | 'game' | 'rounder-winner' | 'game-winner';
 
 export const useGameStore = defineStore('game', () => {
   const router = useRouter();
@@ -18,14 +21,36 @@ export const useGameStore = defineStore('game', () => {
   const player2Ready = ref(false);
 
   const gameCode = ref('');
-  const gameState = ref<
-    'waiting-for-players' | 'instructions' | 'countdown' | 'game' | 'rounder-winner' | 'game-winner'
-  >('waiting-for-players');
+  const gameRound = ref(1);
+  const gameRoundStartTime = ref<string>();
+  const gameState = ref<GameState>('waiting-for-players');
 
   const grid = ref<('x' | '0' | undefined)[]>([]);
 
   const channel = ref<RealtimeChannel>();
 
+  async function broadcastState() {
+    await channel.value?.send({
+      type: 'broadcast',
+      event: 'state',
+      payload: {
+        gameRoundStartTime: gameRoundStartTime.value,
+        gameState: gameState.value,
+      },
+    });
+  }
+
+  function onReceiveState(state: { gameRoundStartTime: string; gameState: GameState }) {
+    console.log('Receive state');
+    console.log({ state });
+    gameState.value = state.gameState;
+    gameRoundStartTime.value = state.gameRoundStartTime;
+  }
+
+  /**
+   * Conect to the supabase realtime channel for this game
+   * and setup listeners for the events we are interested in
+   */
   function connect() {
     channel.value = supabase.channel(gameCode.value, {
       config: {
@@ -38,6 +63,7 @@ export const useGameStore = defineStore('game', () => {
     channel.value.on('presence', { event: 'sync' }, () => {
       console.log('Online users: ', channel.value?.presenceState());
       if (Object.keys(channel.value?.presenceState() as object).length === 2) {
+        gameState.value = 'instructions';
         router.push('/game');
       }
     });
@@ -50,13 +76,16 @@ export const useGameStore = defineStore('game', () => {
       console.log('Users have left: ', leftPresences);
     });
 
-    channel.value.on('broadcast', { event: 'player-1-ready' }, () => {
-      player1Ready.value = true;
-    });
+    channel.value.on('broadcast', { event: 'player-ready' }, ({ payload }) => {
+      if (payload.player === 1) {
+        player1Ready.value = true;
+        router.push('/game');
+      }
 
-    channel.value.on('broadcast', { event: 'player-2-ready' }, () => {
-      player2Ready.value = true;
-      router.push('/game');
+      if (payload.player === 2) {
+        player2Ready.value = true;
+        router.push('/game');
+      }
     });
 
     channel.value.on('broadcast', { event: 'grid' }, (event) => {
@@ -65,6 +94,10 @@ export const useGameStore = defineStore('game', () => {
       console.log(event.payload.grid);
       grid.value = event.payload.grid;
       console.log(grid.value);
+    });
+
+    channel.value.on('broadcast', { event: 'state' }, (event) => {
+      onReceiveState(event.payload);
     });
 
     channel.value.subscribe(async (status) => {
@@ -79,6 +112,12 @@ export const useGameStore = defineStore('game', () => {
     });
   }
 
+  /**
+   * Create a new game. This sets the player 1 name and generates
+   * a new random game code that can be used to connec to the
+   * correct channel
+   * @param name
+   */
   function newGame(name: string) {
     player1Name.value = name;
     gameCode.value = uniqueNamesGenerator({
@@ -91,6 +130,12 @@ export const useGameStore = defineStore('game', () => {
     connect();
   }
 
+  /**
+   * Join an existing game. This will set the player 2 name
+   * and connect them to the supabase realtime channel
+   * @param name
+   * @param joinGameCode
+   */
   function joinGame(name: string, joinGameCode: string) {
     player2Name.value = name;
     gameCode.value = joinGameCode.toLowerCase();
@@ -98,13 +143,19 @@ export const useGameStore = defineStore('game', () => {
     router.push('/game');
   }
 
+  /**
+   * Mark the player as ready. When both players are ready the game will start
+   */
   async function ready() {
     if (isPlayer1.value) {
       player1Ready.value = true;
       const begin = performance.now();
       await channel.value?.send({
         type: 'broadcast',
-        event: 'player-1-ready',
+        event: 'player-ready',
+        payload: {
+          player: 1,
+        },
       });
       const end = performance.now();
       console.log(`Latency is ${end - begin} milliseconds`);
@@ -112,10 +163,22 @@ export const useGameStore = defineStore('game', () => {
       player2Ready.value = true;
       channel.value?.send({
         type: 'broadcast',
-        event: 'player-2-ready',
+        event: 'player-ready',
+        payload: {
+          player: 2,
+        },
       });
     }
   }
+
+  watch([player1Ready, player2Ready], ([player1ReadyValue, player2ReadyValue]) => {
+    if (isPlayer1.value && player1ReadyValue && player2ReadyValue) {
+      console.log('Readyyyyy');
+      gameState.value = 'countdown';
+      gameRoundStartTime.value = dayjs().add(5, 'seconds').toISOString();
+      broadcastState();
+    }
+  });
 
   function placeMarker(gridIndex: number) {
     // Logic to check if its the players turn
@@ -142,11 +205,13 @@ export const useGameStore = defineStore('game', () => {
     player2Name,
     player2Connected,
     player2Ready,
-    gameCode,
     newGame,
     joinGame,
     ready,
+    gameCode,
     gameState,
+    gameRound,
+    gameRoundStartTime,
     grid,
     placeMarker,
   };
