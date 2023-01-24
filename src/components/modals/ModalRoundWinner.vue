@@ -23,7 +23,7 @@ useIntervalFn(() => {
 <template>
   <Modal title="Round winner">
     <div class="h-full flex flex-col items-center justify-between">
-      <div class="h-2/3 flex items-center justify-center">
+      <div v-if="roundWinner" class="h-2/3 flex items-center justify-center">
         <svg width="169" height="169" viewBox="0 0 169 169" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#filter0_d_706_847)">
             <path
@@ -79,6 +79,10 @@ useIntervalFn(() => {
       </div>
 
       <Player v-if="roundWinner" class="-ml-4" :name="winnerName" :player="roundWinner" orientation="left" />
+
+      <div v-if="!roundWinner" class="h-full flex items-center">
+        <h2 class="text-6xl text-white uppercase">Round Draw</h2>
+      </div>
 
       <Score />
     </div>

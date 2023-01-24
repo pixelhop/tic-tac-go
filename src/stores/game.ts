@@ -302,14 +302,30 @@ export const useGameStore = defineStore('game', () => {
     const marker = isPlayer1.value ? '0' : 'x';
     grid.value[gridIndex] = marker;
     console.log({ marker });
+
     // Test for a win
     const winner = WIN_MASKS.some((mask) =>
       mask.every((shouldMatch, index) => (grid.value[index] === marker) === shouldMatch)
     );
 
     if (winner) {
+      console.log('Winner');
       gameRoundWinners.value[gameRound.value - 1] = isPlayer1.value ? 1 : 2;
 
+      setTimeout(() => {
+        gameState.value = 'round-winner';
+        broadcastState();
+
+        setTimeout(() => {
+          nextRound();
+        }, 3000);
+      }, 2000);
+    }
+
+    // Test for a draw
+    const usedGridCells = grid.value.filter((cell) => !!cell);
+    if (usedGridCells.length === 9) {
+      console.log('Draw');
       setTimeout(() => {
         gameState.value = 'round-winner';
         broadcastState();
