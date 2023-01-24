@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import dayjs from 'dayjs';
 import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
+import { useIntervalFn } from '@vueuse/core';
 import { computed, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { RealtimeChannel } from '@supabase/supabase-js';
@@ -8,7 +9,7 @@ import { supabase } from '../supabase';
 
 type GameState = 'waiting-for-players' | 'instructions' | 'countdown' | 'game' | 'round-winner' | 'game-winner';
 type GameGrid = ('x' | '0' | undefined)[];
-const TURN_DURATION = 5000;
+const TURN_DURATION = 3000;
 
 const WIN_MASKS = [
   [true, true, true, false, false, false, false, false, false],
@@ -345,6 +346,23 @@ export const useGameStore = defineStore('game', () => {
 
     broadcastState();
   }
+
+  useIntervalFn(() => {
+    const player = isPlayer1.value ? 1 : 2;
+    if (gameState.value !== 'game' || gameCurrentPlayer.value !== player) {
+      return;
+    }
+
+    // If our go has ended place a random marker
+    const freeIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8].filter((index) => !grid.value[index]);
+    if (dayjs().isAfter(dayjs(gameCurrentGoEnd.value))) {
+      console.log('Missed turn playing randomly!');
+      console.log({ freeIndexes });
+      const randomIndex = freeIndexes[Math.floor(Math.random() * freeIndexes.length)];
+      console.log({ randomIndex });
+      placeMarker(randomIndex);
+    }
+  }, 200);
 
   return {
     isPlayer1,
