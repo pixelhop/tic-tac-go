@@ -9,8 +9,8 @@ defineProps<{
 
 <template>
   <button class="appearance-none flex items-center justify-center">
-    <IconX v-if="contents === 'x'" />
-    <Icon0 v-if="contents === '0'" />
+    <IconX v-if="contents === 'x'" class="h-18 w-18" />
+    <Icon0 v-if="contents === '0'" class="h-18 w-18" />
   </button>
 </template>
 
