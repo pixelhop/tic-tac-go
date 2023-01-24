@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
+import { useClipboard } from '@vueuse/core';
 import Heading from '../components/Heading.vue';
 import LayoutDefault from '../layouts/LayoutDefault.vue';
 import Button from '../components/Button.vue';
@@ -7,6 +8,8 @@ import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
 const { gameCode } = storeToRefs(store);
+
+const { text, copy, copied, isSupported } = useClipboard({ gameCode });
 </script>
 
 <template>
@@ -19,7 +22,8 @@ const { gameCode } = storeToRefs(store);
 
       <div class="text-center">
         <p class="text-xs text-gray-400 uppercase mb-1">Game code</p>
-        <p class="text-blue text-xl font-medium uppercase">{{ gameCode }}</p>
+        <p class="text-blue text-xl font-medium uppercase" @click="copy(gameCode)">{{ gameCode }}</p>
+        <p v-if="copied" class="text-xs text-white">Copied!</p>
       </div>
 
       <p class="uppercase text-center">

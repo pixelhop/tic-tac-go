@@ -10,6 +10,17 @@ type GameState = 'waiting-for-players' | 'instructions' | 'countdown' | 'game' |
 type GameGrid = ('x' | '0' | undefined)[];
 const TURN_DURATION = 5000;
 
+const WIN_MASKS = [
+  [true, true, true, false, false, false, false, false, false],
+  [false, false, false, true, true, true, false, false, false],
+  [false, false, false, false, false, false, true, true, true],
+  [true, false, false, true, false, false, true, false, false],
+  [false, true, false, false, true, false, false, true, false],
+  [false, false, true, false, false, true, false, false, true],
+  [true, false, false, false, true, false, false, false, true],
+  [false, false, true, false, true, false, true, false, false],
+];
+
 export const useGameStore = defineStore('game', () => {
   const router = useRouter();
 
@@ -31,6 +42,7 @@ export const useGameStore = defineStore('game', () => {
   const gameCurrentPlayer = ref<1 | 2>(1);
   const gameCurrentGoStart = ref<string>();
   const gameCurrentGoEnd = ref<string>();
+  const gameRoundWinners = ref<number[]>([]);
 
   const grid = ref<GameGrid>([]);
 
@@ -43,6 +55,7 @@ export const useGameStore = defineStore('game', () => {
       gameCurrentPlayer: gameCurrentPlayer.value,
       gameCurrentGoStart: gameCurrentGoStart.value,
       gameCurrentGoEnd: gameCurrentGoEnd.value,
+      gameRoundWinners: gameRoundWinners.value,
       grid: grid.value,
     };
 
@@ -62,6 +75,7 @@ export const useGameStore = defineStore('game', () => {
     gameCurrentPlayer: 1 | 2;
     gameCurrentGoStart: string;
     gameCurrentGoEnd: string;
+    gameRoundWinners: number[];
     grid: GameGrid;
   }) {
     console.log('Receive state');
@@ -71,6 +85,7 @@ export const useGameStore = defineStore('game', () => {
     gameCurrentPlayer.value = state.gameCurrentPlayer;
     gameCurrentGoStart.value = state.gameCurrentGoStart;
     gameCurrentGoEnd.value = state.gameCurrentGoEnd;
+    gameRoundWinners.value = state.gameRoundWinners;
     grid.value = state.grid;
   }
 
@@ -238,16 +253,32 @@ export const useGameStore = defineStore('game', () => {
       return;
     }
 
+    // Check we aren't placing our marker on an existing marker
+    if (grid.value[gridIndex]) {
+      console.warn('Cannot place marker here');
+      return;
+    }
+
     // Logic to check if its the players turn
     const marker = isPlayer1.value ? '0' : 'x';
     grid.value[gridIndex] = marker;
+
+    // Test for a win
+    const winner = WIN_MASKS.some((mask) =>
+      mask.every((shouldMatch, index) => (grid.value[index] === marker) === shouldMatch)
+    );
+
+    if (winner) {
+      gameRoundWinners.value.push(isPlayer1.value ? 1 : 2);
+      gameState.value = 'rounder-winner';
+    }
+
+    console.log({ winner });
 
     // Next go
     gameCurrentPlayer.value = gameCurrentPlayer.value === 1 ? 2 : 1;
     gameCurrentGoStart.value = new Date().toISOString();
     gameCurrentGoEnd.value = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
-
-    // Test for a win
 
     broadcastState();
   }
@@ -272,6 +303,7 @@ export const useGameStore = defineStore('game', () => {
     gameCurrentPlayer,
     gameCurrentGoStart,
     gameCurrentGoEnd,
+    gameRoundWinners,
     // state,
     grid,
     placeMarker,

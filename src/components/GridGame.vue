@@ -1,14 +1,35 @@
 <script lang="ts" setup>
+import anime from 'animejs/lib/anime.es.js';
 import { storeToRefs } from 'pinia';
+import { computed, ref, watch } from 'vue';
 import GridCell from './GridCell.vue';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { grid } = storeToRefs(store);
+const { grid, gameCurrentPlayer } = storeToRefs(store);
+
+const gridContainer = ref<HTMLDivElement>();
+
+const playerColour = computed(() => {
+  const colourMap = {
+    1: '#02FFFF',
+    2: '#FF7615',
+  };
+
+  return colourMap[gameCurrentPlayer.value];
+});
+
+watch(grid, () => {
+  // anime({
+  //   targets: gridContainer.value,
+  //   scale: [1, 0.9, 1],
+  //   easing: 'easeInOutExpo',
+  // });
+});
 </script>
 
 <template>
-  <div class="relative">
+  <div ref="gridContainer" class="relative">
     <svg
       class="relative z-10 pointer-events-none w-full"
       viewBox="0 0 345 342"
@@ -89,10 +110,10 @@ const { grid } = storeToRefs(store);
           </g>
         </g>
         <g id="Corners" filter="url(#filter0_d_18_91)">
-          <rect id="Rectangle 28" x="33.3544" y="29.3544" width="13.0631" height="13.0631" fill="#02FFFF" />
-          <rect id="Rectangle 30" x="33.3544" y="298.453" width="13.0631" height="13.0631" fill="#02FFFF" />
-          <rect id="Rectangle 29" x="298.099" y="29.3544" width="13.0631" height="13.0631" fill="#02FFFF" />
-          <rect id="Rectangle 31" x="298.099" y="298.453" width="13.0631" height="13.0631" fill="#02FFFF" />
+          <rect id="Rectangle 28" x="33.3544" y="29.3544" width="13.0631" height="13.0631" :fill="playerColour" />
+          <rect id="Rectangle 30" x="33.3544" y="298.453" width="13.0631" height="13.0631" :fill="playerColour" />
+          <rect id="Rectangle 29" x="298.099" y="29.3544" width="13.0631" height="13.0631" :fill="playerColour" />
+          <rect id="Rectangle 31" x="298.099" y="298.453" width="13.0631" height="13.0631" :fill="playerColour" />
         </g>
         <g id="Centers" filter="url(#filter1_i_18_91)">
           <g id="Ellipse 3">
