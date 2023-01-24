@@ -11,7 +11,7 @@ import { useGameStore } from '../stores/game';
 import TurnTimer from '../components/TurnTimer.vue';
 
 const store = useGameStore();
-const { gameCode, gameState, state } = storeToRefs(store);
+const { gameState } = storeToRefs(store);
 
 onBeforeUnmount(() => {
   store.disconnect();
