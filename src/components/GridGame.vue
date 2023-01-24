@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import anime from 'animejs/lib/anime.es.js';
+// import anime from 'animejs/lib/anime.es.js';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import GridCell from './GridCell.vue';

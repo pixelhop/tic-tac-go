@@ -9,7 +9,7 @@ import { useGameStore } from '../stores/game';
 const store = useGameStore();
 const { gameCode } = storeToRefs(store);
 
-const { text, copy, copied, isSupported } = useClipboard({ gameCode });
+const { copy, copied } = useClipboard({ source: gameCode });
 </script>
 
 <template>
