@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import Modal from '../Modal.vue';
 import Button from '../Button.vue';
 import { useGameStore } from '../../stores/game';
 
-const { ready } = useGameStore();
+const store = useGameStore();
+const { player1Name, player2Name, isPlayer1, imReady } = storeToRefs(store);
 </script>
 
 <template>
@@ -19,7 +22,8 @@ const { ready } = useGameStore();
     </div>
 
     <div class="flex justify-center">
-      <Button @click="ready">I'm ready</Button>
+      <Button v-if="!imReady" @click="store.ready">I'm ready</Button>
+      <p v-if="imReady" class="text-white">Ready: Waiting for {{ isPlayer1 ? player2Name : player1Name }}</p>
     </div>
   </Modal>
 </template>

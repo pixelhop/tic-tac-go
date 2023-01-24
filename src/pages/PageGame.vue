@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
+import { onBeforeUnmount } from 'vue';
 import ModalInstructions from '../components/modals/ModalInstructions.vue';
 import ModalCountdown from '../components/modals/ModalCountdown.vue';
 import LayoutDefault from '../layouts/LayoutDefault.vue';
@@ -10,7 +11,11 @@ import { useGameStore } from '../stores/game';
 import TurnTimer from '../components/TurnTimer.vue';
 
 const store = useGameStore();
-const { gameCode, gameState } = storeToRefs(store);
+const { gameCode, gameState, state } = storeToRefs(store);
+
+onBeforeUnmount(() => {
+  store.disconnect();
+});
 </script>
 
 <template>
@@ -21,6 +26,8 @@ const { gameCode, gameState } = storeToRefs(store);
       <Score />
 
       <Players />
+
+      <!-- <h1 class="text-white" @click="state.test = `${Math.random()}`">{{ state.test }}</h1> -->
 
       <TurnTimer />
     </div>

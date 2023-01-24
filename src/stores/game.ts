@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
 import dayjs from 'dayjs';
 import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
-import { ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '../supabase';
 
 type GameState = 'waiting-for-players' | 'instructions' | 'countdown' | 'game' | 'rounder-winner' | 'game-winner';
+type GameGrid = ('x' | '0' | undefined)[];
+const TURN_DURATION = 5000;
 
 export const useGameStore = defineStore('game', () => {
   const router = useRouter();
@@ -20,31 +22,56 @@ export const useGameStore = defineStore('game', () => {
   const player2Connected = ref(false);
   const player2Ready = ref(false);
 
+  const imReady = computed(() => (isPlayer1.value ? player1Ready.value : player2Ready.value));
+
   const gameCode = ref('');
   const gameRound = ref(1);
   const gameRoundStartTime = ref<string>();
   const gameState = ref<GameState>('waiting-for-players');
+  const gameCurrentPlayer = ref<1 | 2>(1);
+  const gameCurrentGoStart = ref<string>();
+  const gameCurrentGoEnd = ref<string>();
 
-  const grid = ref<('x' | '0' | undefined)[]>([]);
+  const grid = ref<GameGrid>([]);
 
   const channel = ref<RealtimeChannel>();
 
   async function broadcastState() {
+    const payload = {
+      gameRoundStartTime: gameRoundStartTime.value,
+      gameState: gameState.value,
+      gameCurrentPlayer: gameCurrentPlayer.value,
+      gameCurrentGoStart: gameCurrentGoStart.value,
+      gameCurrentGoEnd: gameCurrentGoEnd.value,
+      grid: grid.value,
+    };
+
+    console.log('Broadcast state');
+    console.log({ payload });
+
     await channel.value?.send({
       type: 'broadcast',
       event: 'state',
-      payload: {
-        gameRoundStartTime: gameRoundStartTime.value,
-        gameState: gameState.value,
-      },
+      payload,
     });
   }
 
-  function onReceiveState(state: { gameRoundStartTime: string; gameState: GameState }) {
+  function onReceiveState(state: {
+    gameRoundStartTime: string;
+    gameState: GameState;
+    gameCurrentPlayer: 1 | 2;
+    gameCurrentGoStart: string;
+    gameCurrentGoEnd: string;
+    grid: GameGrid;
+  }) {
     console.log('Receive state');
     console.log({ state });
     gameState.value = state.gameState;
     gameRoundStartTime.value = state.gameRoundStartTime;
+    gameCurrentPlayer.value = state.gameCurrentPlayer;
+    gameCurrentGoStart.value = state.gameCurrentGoStart;
+    gameCurrentGoEnd.value = state.gameCurrentGoEnd;
+    grid.value = state.grid;
   }
 
   /**
@@ -61,8 +88,12 @@ export const useGameStore = defineStore('game', () => {
     });
 
     channel.value.on('presence', { event: 'sync' }, () => {
+      const presenceState: any = channel.value?.presenceState();
       console.log('Online users: ', channel.value?.presenceState());
       if (Object.keys(channel.value?.presenceState() as object).length === 2) {
+        console.log({ name: presenceState.player1[0].name });
+        player1Name.value = presenceState.player1[0].name;
+        player2Name.value = presenceState.player2[0].name;
         gameState.value = 'instructions';
         router.push('/game');
       }
@@ -110,6 +141,21 @@ export const useGameStore = defineStore('game', () => {
         // your callback function will now be called with the messages broadcast by the other client
       }
     });
+  }
+
+  /**
+   * Disconnect from the current game
+   */
+  function disconnect() {
+    channel.value?.unsubscribe();
+    gameCode.value = '';
+    player1Name.value = '';
+    player1Connected.value = false;
+    player1Ready.value = false;
+
+    player2Name.value = '';
+    player2Connected.value = false;
+    player2Ready.value = false;
   }
 
   /**
@@ -177,24 +223,33 @@ export const useGameStore = defineStore('game', () => {
       gameState.value = 'countdown';
       gameRoundStartTime.value = dayjs().add(5, 'seconds').toISOString();
       broadcastState();
+      setTimeout(() => {
+        gameState.value = 'game';
+        gameCurrentGoStart.value = new Date().toISOString();
+        gameCurrentGoEnd.value = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
+        broadcastState();
+      }, 5000);
     }
   });
 
   function placeMarker(gridIndex: number) {
+    // Check it is the current players turn
+    if ((isPlayer1.value && gameCurrentPlayer.value !== 1) || (!isPlayer1.value && gameCurrentPlayer.value !== 2)) {
+      return;
+    }
+
     // Logic to check if its the players turn
-    const marker = isPlayer1.value ? 'x' : '0';
+    const marker = isPlayer1.value ? '0' : 'x';
     grid.value[gridIndex] = marker;
 
-    // Broadcast the grid
-    channel.value?.send({
-      type: 'broadcast',
-      event: 'grid',
-      payload: {
-        grid: grid.value,
-      },
-    });
+    // Next go
+    gameCurrentPlayer.value = gameCurrentPlayer.value === 1 ? 2 : 1;
+    gameCurrentGoStart.value = new Date().toISOString();
+    gameCurrentGoEnd.value = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
 
     // Test for a win
+
+    broadcastState();
   }
 
   return {
@@ -205,13 +260,19 @@ export const useGameStore = defineStore('game', () => {
     player2Name,
     player2Connected,
     player2Ready,
+    imReady,
     newGame,
     joinGame,
+    disconnect,
     ready,
     gameCode,
     gameState,
     gameRound,
     gameRoundStartTime,
+    gameCurrentPlayer,
+    gameCurrentGoStart,
+    gameCurrentGoEnd,
+    // state,
     grid,
     placeMarker,
   };

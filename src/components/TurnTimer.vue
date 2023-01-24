@@ -1,7 +1,27 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { useIntervalFn } from '@vueuse/core';
+import dayjs from 'dayjs';
+import { storeToRefs } from 'pinia';
+import { computed, ref } from 'vue';
+import { useGameStore } from '../stores/game';
 
-const player = 1;
+const store = useGameStore();
+const { gameCurrentPlayer, gameCurrentGoStart, gameCurrentGoEnd } = storeToRefs(store);
+
+const goPercentage = ref(0);
+useIntervalFn(() => {
+  if (!gameCurrentGoEnd.value || !gameCurrentGoStart.value) {
+    return;
+  }
+
+  const originalDuration = Math.abs(
+    dayjs(gameCurrentGoStart.value).diff(dayjs(gameCurrentGoEnd.value), 'milliseconds')
+  );
+
+  const timeLeft = Math.max(0, dayjs(gameCurrentGoEnd.value).diff(dayjs(), 'milliseconds'));
+
+  goPercentage.value = 1 - timeLeft / originalDuration;
+}, 50);
 
 const playerColour = computed(() => {
   const colourMap = {
@@ -9,18 +29,32 @@ const playerColour = computed(() => {
     2: '#FF7615',
   };
 
-  return colourMap[player];
+  return colourMap[gameCurrentPlayer.value];
 });
 </script>
 
 <template>
   <div>
     <h5 class="uppercase font-medium text-gray-400 text-xs text-center">Turn timer</h5>
-    <svg class="-mt-2" viewBox="0 0 370 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      :class="{ jiggle: goPercentage > 0.75 }"
+      class="-mt-2"
+      viewBox="0 0 370 62"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g id="turn-timer" filter="url(#filter0_d_107_88)">
         <rect id="outer" x="18" y="19" width="334" height="25" :stroke="playerColour" stroke-width="4" />
         <rect id="progress-bg" x="17" y="26" width="335" height="10" :fill="playerColour" fill-opacity="0.25" />
-        <rect id="progress" x="17" y="26" width="335" height="10" :fill="playerColour" fill-opacity="0.72" />
+        <rect
+          id="progress"
+          x="17"
+          y="26"
+          :width="goPercentage * 335"
+          height="10"
+          :fill="playerColour"
+          fill-opacity="0.72"
+        />
         <g id="dashes">
           <line
             id="Line 20"
@@ -215,7 +249,7 @@ const playerColour = computed(() => {
       </g>
       <defs>
         <filter
-          v-if="player === 1"
+          v-if="gameCurrentPlayer === 1"
           id="filter0_d_107_88"
           x="0"
           y="0.916107"
@@ -240,7 +274,7 @@ const playerColour = computed(() => {
         </filter>
 
         <filter
-          v-if="player === 2"
+          v-if="gameCurrentPlayer === 2"
           id="filter0_d_107_88"
           x="0"
           y="0.916107"
@@ -268,4 +302,22 @@ const playerColour = computed(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.jiggle {
+  transform-origin: center;
+  animation-name: jiggle;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-duration: 80ms;
+  animation-fill-mode: both;
+}
+
+@keyframes jiggle {
+  from {
+    transform: rotate(-1deg);
+  }
+  to {
+    transform: rotate(1deg);
+  }
+}
+</style>
