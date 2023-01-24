@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '../supabase';
 
-type GameState = 'waiting-for-players' | 'instructions' | 'countdown' | 'game' | 'rounder-winner' | 'game-winner';
+type GameState = 'waiting-for-players' | 'instructions' | 'countdown' | 'game' | 'round-winner' | 'game-winner';
 type GameGrid = ('x' | '0' | undefined)[];
 const TURN_DURATION = 5000;
 
@@ -42,14 +42,36 @@ export const useGameStore = defineStore('game', () => {
   const gameCurrentPlayer = ref<1 | 2>(1);
   const gameCurrentGoStart = ref<string>();
   const gameCurrentGoEnd = ref<string>();
-  const gameRoundWinners = ref<number[]>([]);
+  const gameRoundWinners = ref<((1 | 2) | null)[]>([null, null, null, null, null]);
 
   const grid = ref<GameGrid>([]);
+  const winningMask = computed(() => {
+    // Test X
+    const winningXMask = WIN_MASKS.find((mask) =>
+      mask.every((shouldMatch, index) => (grid.value[index] === 'x') === shouldMatch)
+    );
+
+    if (winningXMask) {
+      return winningXMask;
+    }
+
+    // Test 0
+    const winning0Mask = WIN_MASKS.find((mask) =>
+      mask.every((shouldMatch, index) => (grid.value[index] === '0') === shouldMatch)
+    );
+
+    if (winning0Mask) {
+      return winning0Mask;
+    }
+
+    return null;
+  });
 
   const channel = ref<RealtimeChannel>();
 
   async function broadcastState() {
     const payload = {
+      gameRound: gameRound.value,
       gameRoundStartTime: gameRoundStartTime.value,
       gameState: gameState.value,
       gameCurrentPlayer: gameCurrentPlayer.value,
@@ -70,16 +92,18 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function onReceiveState(state: {
+    gameRound: number;
     gameRoundStartTime: string;
     gameState: GameState;
     gameCurrentPlayer: 1 | 2;
     gameCurrentGoStart: string;
     gameCurrentGoEnd: string;
-    gameRoundWinners: number[];
+    gameRoundWinners: ((1 | 2) | null)[];
     grid: GameGrid;
   }) {
     console.log('Receive state');
     console.log({ state });
+    gameRound.value = state.gameRound;
     gameState.value = state.gameState;
     gameRoundStartTime.value = state.gameRoundStartTime;
     gameCurrentPlayer.value = state.gameCurrentPlayer;
@@ -247,6 +271,21 @@ export const useGameStore = defineStore('game', () => {
     }
   });
 
+  function nextRound() {
+    grid.value = [];
+    gameRound.value += 1;
+    gameCurrentPlayer.value = (2 - (gameRound.value % 2)) as 1 | 2;
+    gameRoundStartTime.value = dayjs().add(5, 'seconds').toISOString();
+    gameState.value = 'countdown';
+    broadcastState();
+    setTimeout(() => {
+      gameState.value = 'game';
+      gameCurrentGoStart.value = new Date().toISOString();
+      gameCurrentGoEnd.value = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
+      broadcastState();
+    }, 5000);
+  }
+
   function placeMarker(gridIndex: number) {
     // Check it is the current players turn
     if ((isPlayer1.value && gameCurrentPlayer.value !== 1) || (!isPlayer1.value && gameCurrentPlayer.value !== 2)) {
@@ -262,15 +301,23 @@ export const useGameStore = defineStore('game', () => {
     // Logic to check if its the players turn
     const marker = isPlayer1.value ? '0' : 'x';
     grid.value[gridIndex] = marker;
-
+    console.log({ marker });
     // Test for a win
     const winner = WIN_MASKS.some((mask) =>
       mask.every((shouldMatch, index) => (grid.value[index] === marker) === shouldMatch)
     );
 
     if (winner) {
-      gameRoundWinners.value.push(isPlayer1.value ? 1 : 2);
-      gameState.value = 'rounder-winner';
+      gameRoundWinners.value[gameRound.value - 1] = isPlayer1.value ? 1 : 2;
+
+      setTimeout(() => {
+        gameState.value = 'round-winner';
+        broadcastState();
+
+        setTimeout(() => {
+          nextRound();
+        }, 3000);
+      }, 2000);
     }
 
     console.log({ winner });
@@ -304,6 +351,7 @@ export const useGameStore = defineStore('game', () => {
     gameCurrentGoStart,
     gameCurrentGoEnd,
     gameRoundWinners,
+    winningMask,
     // state,
     grid,
     placeMarker,

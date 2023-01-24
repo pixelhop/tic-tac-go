@@ -2,13 +2,15 @@
 import { storeToRefs } from 'pinia';
 import { useIntervalFn } from '@vueuse/core';
 import dayjs from 'dayjs';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Modal from '../Modal.vue';
 import Player from '../Player.vue';
 import { useGameStore } from '../../stores/game';
 
 const store = useGameStore();
-const { gameRound, gameRoundStartTime } = storeToRefs(store);
+const { gameRound, gameRoundStartTime, gameCurrentPlayer, player1Name, player2Name } = storeToRefs(store);
+
+const playerName = computed(() => (gameCurrentPlayer.value === 1 ? player1Name.value : player2Name.value));
 
 const secondsRemaining = ref(1000);
 useIntervalFn(() => {
@@ -19,7 +21,7 @@ useIntervalFn(() => {
 <template>
   <Modal :title="`Round ${gameRound}`">
     <div class="h-full flex flex-col items-center justify-center">
-      <Player class="-ml-4" name="Jozef" :player="1" orientation="left" />
+      <Player class="-ml-4" :name="playerName" :player="gameCurrentPlayer" orientation="left" />
       <p class="uppercase font-medium text-white tracking-[0.25em]">Will go first</p>
 
       <div>

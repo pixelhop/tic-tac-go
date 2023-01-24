@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-const rounds = [1, 2, null, null, null];
+import { storeToRefs } from 'pinia';
+import { useGameStore } from '../stores/game';
+
+const store = useGameStore();
+const { gameRoundWinners } = storeToRefs(store);
 </script>
 
 <template>
@@ -7,7 +11,7 @@ const rounds = [1, 2, null, null, null];
     <h4 class="uppercase font-medium text-white tracking-[0.25em] mb-1">Score</h4>
     <div class="flex gap-2 mb-2">
       <div
-        v-for="(round, index) in rounds"
+        v-for="(round, index) in gameRoundWinners"
         :key="index"
         class="h-4 w-4"
         :class="{

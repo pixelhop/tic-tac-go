@@ -6,7 +6,7 @@ import GridCell from './GridCell.vue';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { grid, gameCurrentPlayer } = storeToRefs(store);
+const { grid, gameCurrentPlayer, winningMask } = storeToRefs(store);
 
 const gridContainer = ref<HTMLDivElement>();
 
@@ -565,48 +565,57 @@ watch(grid, () => {
     <div class="absolute inset-0">
       <GridCell
         :contents="grid[0]"
+        :highlight="winningMask?.[0]"
         class="h-[26%] w-[25%] absolute left-[12%] top-[11%]"
         @click="store.placeMarker(0)"
       />
       <GridCell
         :contents="grid[1]"
+        :highlight="winningMask?.[1]"
         class="h-[26%] w-[25%] absolute left-[37.5%] top-[11%]"
         @click="store.placeMarker(1)"
       />
       <GridCell
         :contents="grid[2]"
+        :highlight="winningMask?.[2]"
         class="h-[26%] w-[25%] absolute left-[63%] top-[11%]"
         @click="store.placeMarker(2)"
       />
 
       <GridCell
         :contents="grid[3]"
+        :highlight="winningMask?.[3]"
         class="h-[26%] w-[25%] absolute left-[12%] top-[37%]"
         @click="store.placeMarker(3)"
       />
       <GridCell
         :contents="grid[4]"
+        :highlight="winningMask?.[4]"
         class="h-[26%] w-[25%] absolute left-[37.5%] top-[37%]"
         @click="store.placeMarker(4)"
       />
       <GridCell
         :contents="grid[5]"
+        :highlight="winningMask?.[5]"
         class="h-[26%] w-[25%] absolute left-[63%] top-[37%]"
         @click="store.placeMarker(5)"
       />
 
       <GridCell
         :contents="grid[6]"
+        :highlight="winningMask?.[6]"
         class="h-[26%] w-[25%] absolute left-[12%] top-[63%]"
         @click="store.placeMarker(6)"
       />
       <GridCell
         :contents="grid[7]"
+        :highlight="winningMask?.[7]"
         class="h-[26%] w-[25%] absolute left-[37.5%] top-[63%]"
         @click="store.placeMarker(7)"
       />
       <GridCell
         :contents="grid[8]"
+        :highlight="winningMask?.[8]"
         class="h-[26%] w-[25%] absolute left-[63%] top-[63%]"
         @click="store.placeMarker(8)"
       />

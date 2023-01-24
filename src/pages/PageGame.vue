@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { onBeforeUnmount } from 'vue';
 import ModalInstructions from '../components/modals/ModalInstructions.vue';
 import ModalCountdown from '../components/modals/ModalCountdown.vue';
+import ModalRoundWinner from '../components/modals/ModalRoundWinner.vue';
 import LayoutDefault from '../layouts/LayoutDefault.vue';
 import GridGame from '../components/GridGame.vue';
 import Score from '../components/Score.vue';
@@ -34,6 +35,7 @@ onBeforeUnmount(() => {
 
     <ModalInstructions v-if="gameState === 'instructions'" />
     <ModalCountdown v-if="gameState === 'countdown'" />
+    <ModalRoundWinner v-if="gameState === 'round-winner'" />
   </LayoutDefault>
 </template>
 

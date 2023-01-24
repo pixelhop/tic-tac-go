@@ -1,14 +1,28 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
 import IconX from './icons/IconX.vue';
 import Icon0 from './icons/Icon0.vue';
 
-defineProps<{
+const props = defineProps<{
   contents?: 'x' | '0';
+  highlight?: boolean;
 }>();
+
+const highlightClasses = computed(() => {
+  if (props.highlight && props.contents === 'x') {
+    return 'bg-orange bg-opacity-10';
+  }
+
+  if (props.highlight && props.contents === '0') {
+    return 'bg-blue bg-opacity-10';
+  }
+
+  return '';
+});
 </script>
 
 <template>
-  <button class="appearance-none flex items-center justify-center">
+  <button class="appearance-none flex items-center justify-center" :class="highlightClasses">
     <transition name="fade">
       <IconX v-if="contents === 'x'" class="h-16 w-16" />
     </transition>
