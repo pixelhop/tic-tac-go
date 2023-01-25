@@ -49,7 +49,7 @@ export const useGameStore = defineStore('game', () => {
   const winningMask = computed(() => {
     // Test X
     const winningXMask = WIN_MASKS.find((mask) =>
-      mask.every((shouldMatch, index) => (grid.value[index] === 'x') === shouldMatch)
+      mask.every((shouldMatch, index) => (shouldMatch ? grid.value[index] === 'x' : true))
     );
 
     if (winningXMask) {
@@ -58,7 +58,7 @@ export const useGameStore = defineStore('game', () => {
 
     // Test 0
     const winning0Mask = WIN_MASKS.find((mask) =>
-      mask.every((shouldMatch, index) => (grid.value[index] === '0') === shouldMatch)
+      mask.every((shouldMatch, index) => (shouldMatch ? grid.value[index] === '0' : true))
     );
 
     if (winning0Mask) {
@@ -306,8 +306,9 @@ export const useGameStore = defineStore('game', () => {
 
     // Test for a win
     const winner = WIN_MASKS.some((mask) =>
-      mask.every((shouldMatch, index) => (grid.value[index] === marker) === shouldMatch)
+      mask.every((shouldMatch, index) => (shouldMatch ? grid.value[index] === marker : true))
     );
+    console.log({ grid: grid.value });
 
     if (winner) {
       console.log('Winner');
