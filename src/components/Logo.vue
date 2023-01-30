@@ -11,6 +11,18 @@ const props = withDefaults(
   }
 );
 
+function flicker() {
+  anime({
+    targets: ['#letter_8', '#letter_4'],
+    opacity: [1, 0, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    easing: 'linear',
+    direction: 'alternate',
+    duration: 2000,
+    delay: 0,
+    loop: true,
+  });
+}
+
 function animateIn() {
   anime({
     targets: '#letters path',
@@ -104,12 +116,17 @@ function animateIn() {
     easing: 'easeOutCubic',
     duration: 800,
     delay: 1700,
+    complete: () => {
+      flicker();
+    },
   });
 }
 
 onMounted(() => {
   if (props.animateIn) {
     animateIn();
+  } else {
+    flicker();
   }
 });
 </script>
