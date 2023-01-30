@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@fontsource/orbitron': ^4.5.11
   '@supabase/supabase-js': ^2.4.1
+  '@types/animejs': ^3.1.7
   '@typescript-eslint/eslint-plugin': ^5.48.2
   '@typescript-eslint/parser': ^5.48.2
   '@vitejs/plugin-vue': ^4.0.0
@@ -43,6 +44,7 @@ dependencies:
   yup: 0.32.11
 
 devDependencies:
+  '@types/animejs': 3.1.7
   '@typescript-eslint/eslint-plugin': 5.48.2_caon6io6stgpr7lz2rtbhekxqy
   '@typescript-eslint/parser': 5.48.2_7uibuqfxkfaozanbtbziikiqje
   '@vitejs/plugin-vue': 4.0.0_vite@4.0.4+vue@3.2.45
@@ -406,6 +408,10 @@ packages:
       - encoding
       - supports-color
     dev: false
+
+  /@types/animejs/3.1.7:
+    resolution: {integrity: sha512-kFSyjM+fLo3oE9noWEtUvF82ttN8fTrKohiEMIrSzEzEjnsCmtO0rBCUQBlSPEb2w8vfN+v4/Zo0tK21Bgmq4g==}
+    dev: true
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
