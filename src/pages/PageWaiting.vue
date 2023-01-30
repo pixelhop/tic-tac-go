@@ -24,6 +24,7 @@ const { copy, copied } = useClipboard({ source: gameCode });
         <p class="text-xs text-gray-400 uppercase mb-1">Game code</p>
         <p class="text-blue text-xl font-medium uppercase" @click="copy(gameCode)">{{ gameCode }}</p>
         <p v-if="copied" class="text-xs text-white">Copied!</p>
+        <p v-else class="text-xs text-white">click to copy</p>
       </div>
 
       <p class="uppercase text-center">

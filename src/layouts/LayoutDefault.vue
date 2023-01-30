@@ -4,16 +4,18 @@ import Logo from '../components/Logo.vue';
 withDefaults(
   defineProps<{
     showFooter?: boolean;
+    animateLogo?: boolean;
   }>(),
   {
     showFooter: true,
+    animateLogo: false,
   }
 );
 </script>
 
 <template>
   <div class="h-full flex flex-col">
-    <Logo class="mt-4" />
+    <Logo :animate-in="animateLogo" class="mt-4" />
     <main class="h-full relative">
       <slot />
     </main>

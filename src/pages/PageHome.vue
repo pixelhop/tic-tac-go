@@ -4,7 +4,7 @@ import Button from '../components/Button.vue';
 </script>
 
 <template>
-  <LayoutDefault>
+  <LayoutDefault animate-logo>
     <div class="absolute inset-0 flex justify-center items-center px-12">
       <svg class="w-full" viewBox="0 0 329 329" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="294.388" y1="37.3191" x2="36.388" y2="295.319" stroke="#777777" stroke-opacity="0.34" />

@@ -10,6 +10,7 @@ import Score from '../components/Score.vue';
 import Players from '../components/Players.vue';
 import { useGameStore } from '../stores/game';
 import TurnTimer from '../components/TurnTimer.vue';
+import ModalRoundGameWinner from '../components/modals/ModalRoundGameWinner.vue';
 
 const store = useGameStore();
 const { gameState } = storeToRefs(store);
@@ -34,8 +35,9 @@ onBeforeUnmount(() => {
     </div>
 
     <ModalInstructions v-if="gameState === 'instructions'" />
-    <ModalCountdown v-if="gameState === 'countdown'" />
-    <ModalRoundWinner v-if="gameState === 'round-winner'" />
+    <ModalCountdown v-else-if="gameState === 'countdown'" />
+    <ModalRoundWinner v-else-if="gameState === 'round-winner'" />
+    <ModalRoundGameWinner v-else-if="gameState === 'game-winner'" />
   </LayoutDefault>
 </template>
 

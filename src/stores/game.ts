@@ -319,7 +319,16 @@ export const useGameStore = defineStore('game', () => {
         broadcastState();
 
         setTimeout(() => {
-          nextRound();
+          // If we have had less than five rounds and no player has won 3 games, start the next round
+          // otherwise show the game winner screen
+          const player1Wins = gameRoundWinners.value.filter((value) => value === 1).length;
+          const player2Wins = gameRoundWinners.value.filter((value) => value === 2).length;
+          if (gameRound.value < 5 && player1Wins < 3 && player2Wins < 3) {
+            nextRound();
+          } else {
+            gameState.value = 'game-winner';
+            broadcastState();
+          }
         }, 3000);
       }, 2000);
     }
