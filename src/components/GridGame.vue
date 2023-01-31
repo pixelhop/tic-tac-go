@@ -39,13 +39,31 @@ watch(
       delay: (el, i) => i * 10,
       duration: 300,
     });
+
+    anime({
+      targets: '.grid-container',
+      scale: 1.05,
+      // rotate: [anime.random(-2, 2), anime.random(-2, 2), anime.random(-2, 2), anime.random(-2, 2)],
+      // // translateX: [
+      // //   anime.random(-2, 2),
+      // //   anime.random(-2, 2),
+      // //   anime.random(-2, 2),
+      // //   anime.random(-2, 2),
+      // //   anime.random(-2, 2),
+      // //   anime.random(-2, 2),
+      // //   anime.random(-2, 2),
+      // // ],
+      easing: 'easeOutQuad',
+      direction: 'alternate',
+      duration: 50,
+    });
   },
   { deep: true }
 );
 </script>
 
 <template>
-  <div ref="gridContainer" class="relative">
+  <div ref="gridContainer" class="relative grid-container">
     <svg
       class="relative z-10 pointer-events-none w-full"
       viewBox="0 0 345 342"

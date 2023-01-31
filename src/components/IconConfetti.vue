@@ -9,7 +9,7 @@ defineProps<{ player: 1 | 2 }>();
 onMounted(() => {
   anime({
     targets: '.winner-icon',
-    opacity: [1, 1, 1, 1, 0],
+    // opacity: [1, 1, 1, 1, 0],
     translateX: () => [0, anime.random(150, 240)],
     scale: () => [0, anime.random(0.8, 1)],
     rotate: () => [0, anime.random(0, 360)],

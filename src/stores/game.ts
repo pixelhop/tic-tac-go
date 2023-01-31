@@ -329,7 +329,7 @@ export const useGameStore = defineStore('game', () => {
             gameState.value = 'game-winner';
             broadcastState();
           }
-        }, 3000);
+        }, 5000);
       }, 2000);
     }
 
@@ -343,7 +343,7 @@ export const useGameStore = defineStore('game', () => {
 
         setTimeout(() => {
           nextRound();
-        }, 3000);
+        }, 5000);
       }, 2000);
     }
 
