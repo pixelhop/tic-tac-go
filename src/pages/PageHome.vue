@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import LayoutDefault from '../layouts/LayoutDefault.vue';
 import Button from '../components/Button.vue';
+import ModalRoundWinner from '../components/modals/ModalRoundWinner.vue';
 </script>
 
 <template>
@@ -21,6 +22,8 @@ import Button from '../components/Button.vue';
       <Button class="button-animation" as="router-link" to="/join-game">Join game</Button>
       <Button class="button-animation">About</Button>
     </div>
+
+    <ModalRoundWinner />
   </LayoutDefault>
 </template>
 
