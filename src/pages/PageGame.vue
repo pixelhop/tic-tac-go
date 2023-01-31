@@ -34,11 +34,10 @@ onBeforeUnmount(() => {
       <TurnTimer />
     </div>
 
-    <!-- <ModalInstructions v-if="gameState === 'instructions'" /> -->
-    <!-- <ModalCountdown v-else-if="gameState === 'countdown'" /> -->
-    <ModalRoundWinner />
+    <ModalInstructions v-if="gameState === 'instructions'" />
+    <ModalCountdown v-else-if="gameState === 'countdown'" />
     <ModalRoundWinner v-if="gameState === 'round-winner'" />
-    <!-- <ModalRoundGameWinner v-else-if="gameState === 'game-winner'" /> -->
+    <ModalRoundGameWinner v-else-if="gameState === 'game-winner'" />
   </LayoutDefault>
 </template>
 

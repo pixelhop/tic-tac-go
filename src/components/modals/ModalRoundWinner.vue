@@ -12,10 +12,8 @@ import IconConfetti from '../IconConfetti.vue';
 const store = useGameStore();
 const { gameRound, gameRoundStartTime, gameRoundWinners, player1Name, player2Name } = storeToRefs(store);
 
-// const roundWinner = computed(() => gameRoundWinners.value[gameRound.value - 1]);
-const roundWinner = computed(() => 1);
-const winnerName = computed(() => 'Jeff');
-// const winnerName = computed(() => (roundWinner.value === 1 ? player1Name.value : player2Name.value));
+const roundWinner = computed(() => gameRoundWinners.value[gameRound.value - 1]);
+const winnerName = computed(() => (roundWinner.value === 1 ? player1Name.value : player2Name.value));
 
 const secondsRemaining = ref(1000);
 useIntervalFn(() => {

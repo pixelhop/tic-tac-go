@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-// import anime from 'animejs/lib/anime.es.js';
+import anime from 'animejs/lib/anime.es.js';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import GridCell from './GridCell.vue';
@@ -19,13 +19,29 @@ const playerColour = computed(() => {
   return colourMap[gameCurrentPlayer.value];
 });
 
-watch(grid, () => {
-  // anime({
-  //   targets: gridContainer.value,
-  //   scale: [1, 0.9, 1],
-  //   easing: 'easeInOutExpo',
-  // });
-});
+watch(
+  grid,
+  () => {
+    console.log('Play animation');
+    anime({
+      targets: '.lines-1 line',
+      // stroke: ['#fff', '#FF7615', '#fff'],
+      scale: [1, 1.7, 1],
+      easing: 'easeOutCubic',
+      delay: (el, i) => i * 10,
+      duration: 300,
+    });
+    anime({
+      targets: '.lines-2 line',
+      // stroke: ['#fff', '#FF7615', '#fff'],
+      scale: [1, 1.7, 1],
+      easing: 'easeOutCubic',
+      delay: (el, i) => i * 10,
+      duration: 300,
+    });
+  },
+  { deep: true }
+);
 </script>
 
 <template>
@@ -117,21 +133,21 @@ watch(grid, () => {
         </g>
         <g id="Centers" filter="url(#filter1_i_18_91)">
           <g id="Ellipse 3">
-            <circle cx="128.715" cy="127.327" r="6.53153" fill="#FF7615" />
+            <circle cx="128.715" cy="127.327" r="6.53153" :fill="playerColour" />
           </g>
           <g id="Ellipse 5">
-            <circle cx="128.715" cy="213.544" r="6.53153" fill="#FF7615" />
+            <circle cx="128.715" cy="213.544" r="6.53153" :fill="playerColour" />
           </g>
           <g id="Ellipse 4">
-            <circle cx="216.673" cy="127.327" r="6.53153" fill="#FF7615" />
+            <circle cx="216.673" cy="127.327" r="6.53153" :fill="playerColour" />
           </g>
           <g id="Ellipse 6">
-            <circle cx="216.673" cy="213.544" r="6.53153" fill="#FF7615" />
+            <circle cx="216.673" cy="213.544" r="6.53153" :fill="playerColour" />
           </g>
         </g>
         <g id="Line decoration">
           <g id="Top lines decoration">
-            <g id="Frame 2" filter="url(#filter6_d_18_91)">
+            <g id="Frame 2" class="lines-1" filter="url(#filter6_d_18_91)">
               <line id="Line 7" x1="64" y1="29" x2="64" y2="23" stroke="white" stroke-width="2" />
               <line id="Line 8" x1="88" y1="29" x2="88" y2="20" stroke="white" stroke-width="2" />
               <line id="Line 9" x1="112" y1="29" x2="112" y2="17" stroke="white" stroke-width="2" />
@@ -143,7 +159,7 @@ watch(grid, () => {
               <line id="Line 18" x1="256" y1="29" x2="256" y2="20" stroke="white" stroke-width="2" />
               <line id="Line 19" x1="280" y1="29" x2="280" y2="23" stroke="white" stroke-width="2" />
             </g>
-            <g id="Frame 4" filter="url(#filter7_d_18_91)">
+            <g class="lines-2" filter="url(#filter7_d_18_91)">
               <line id="Line 7_2" x1="64" y1="29" x2="64" y2="23" stroke="white" stroke-width="2" />
               <line id="Line 8_2" x1="88" y1="29" x2="88" y2="20" stroke="white" stroke-width="2" />
               <line id="Line 9_2" x1="112" y1="29" x2="112" y2="17" stroke="white" stroke-width="2" />
@@ -157,7 +173,7 @@ watch(grid, () => {
             </g>
           </g>
           <g id="Bottom lines decoration">
-            <g id="Frame 5" filter="url(#filter8_d_18_91)">
+            <g id="Frame 5" class="lines-1" filter="url(#filter8_d_18_91)">
               <line id="Line 7_3" x1="280" y1="313" x2="280" y2="319" stroke="white" stroke-width="2" />
               <line id="Line 8_3" x1="256" y1="313" x2="256" y2="322" stroke="white" stroke-width="2" />
               <line id="Line 9_3" x1="232" y1="313" x2="232" y2="325" stroke="white" stroke-width="2" />
@@ -169,7 +185,7 @@ watch(grid, () => {
               <line id="Line 18_3" x1="88" y1="313" x2="88" y2="322" stroke="white" stroke-width="2" />
               <line id="Line 19_3" x1="64" y1="313" x2="64" y2="319" stroke="white" stroke-width="2" />
             </g>
-            <g id="Bottom lines decoration_2" filter="url(#filter9_d_18_91)">
+            <g id="Bottom lines decoration_2" class="lines-2" filter="url(#filter9_d_18_91)">
               <line id="Line 7_4" x1="280" y1="313" x2="280" y2="319" stroke="white" stroke-width="2" />
               <line id="Line 8_4" x1="256" y1="313" x2="256" y2="322" stroke="white" stroke-width="2" />
               <line id="Line 9_4" x1="232" y1="313" x2="232" y2="325" stroke="white" stroke-width="2" />
@@ -183,7 +199,7 @@ watch(grid, () => {
             </g>
           </g>
           <g id="Bottom lines decoration_3">
-            <g id="Frame 5_2" filter="url(#filter10_d_18_91)">
+            <g id="Frame 5_2" class="lines-1" filter="url(#filter10_d_18_91)">
               <line id="Line 7_5" x1="29" y1="279" x2="23" y2="279" stroke="white" stroke-width="2" />
               <line id="Line 8_5" x1="29" y1="255" x2="20" y2="255" stroke="white" stroke-width="2" />
               <line id="Line 9_5" x1="29" y1="231" x2="17" y2="231" stroke="white" stroke-width="2" />
@@ -195,7 +211,7 @@ watch(grid, () => {
               <line id="Line 18_5" x1="29" y1="87" x2="20" y2="87" stroke="white" stroke-width="2" />
               <line id="Line 19_5" x1="29" y1="63" x2="23" y2="63" stroke="white" stroke-width="2" />
             </g>
-            <g id="Bottom lines decoration_4" filter="url(#filter11_d_18_91)">
+            <g id="Bottom lines decoration_4" class="lines-2" filter="url(#filter11_d_18_91)">
               <line id="Line 7_6" x1="29" y1="279" x2="23" y2="279" stroke="white" stroke-width="2" />
               <line id="Line 8_6" x1="29" y1="255" x2="20" y2="255" stroke="white" stroke-width="2" />
               <line id="Line 9_6" x1="29" y1="231" x2="17" y2="231" stroke="white" stroke-width="2" />
@@ -209,7 +225,7 @@ watch(grid, () => {
             </g>
           </g>
           <g id="Bottom lines decoration_5">
-            <g id="Frame 5_3" filter="url(#filter12_d_18_91)">
+            <g id="Frame 5_3" class="lines-1" filter="url(#filter12_d_18_91)">
               <line id="Line 7_7" x1="316" y1="61" x2="322" y2="61" stroke="white" stroke-width="2" />
               <line id="Line 8_7" x1="316" y1="85" x2="325" y2="85" stroke="white" stroke-width="2" />
               <line id="Line 9_7" x1="316" y1="109" x2="328" y2="109" stroke="white" stroke-width="2" />
@@ -221,7 +237,7 @@ watch(grid, () => {
               <line id="Line 18_7" x1="316" y1="253" x2="325" y2="253" stroke="white" stroke-width="2" />
               <line id="Line 19_7" x1="316" y1="277" x2="322" y2="277" stroke="white" stroke-width="2" />
             </g>
-            <g id="Bottom lines decoration_6" filter="url(#filter13_d_18_91)">
+            <g id="Bottom lines decoration_6" class="lines-2" filter="url(#filter13_d_18_91)">
               <line id="Line 7_8" x1="316" y1="61" x2="322" y2="61" stroke="white" stroke-width="2" />
               <line id="Line 8_8" x1="316" y1="85" x2="325" y2="85" stroke="white" stroke-width="2" />
               <line id="Line 9_8" x1="316" y1="109" x2="328" y2="109" stroke="white" stroke-width="2" />
@@ -623,4 +639,9 @@ watch(grid, () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+svg * {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+</style>
