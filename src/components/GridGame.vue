@@ -163,7 +163,66 @@ watch(
             <circle cx="216.673" cy="213.544" r="6.53153" :fill="playerColour" />
           </g>
         </g>
+
         <g id="Line decoration">
+          <g id="Top lines decoration">
+            <g id="Frame 4" class="lines-1" filter="url(#filter6_dd_18_91)">
+              <line id="Line 7" x1="64" y1="29" x2="64" y2="23" stroke="white" stroke-width="2" />
+              <line id="Line 8" x1="88" y1="29" x2="88" y2="20" stroke="white" stroke-width="2" />
+              <line id="Line 9" x1="112" y1="29" x2="112" y2="17" stroke="white" stroke-width="2" />
+              <line id="Line 10" x1="136" y1="29" x2="136" y2="15" stroke="white" stroke-width="2" />
+              <line id="Line 11" x1="160" y1="29" x2="160" y2="11" stroke="white" stroke-width="2" />
+              <line id="Line 12" x1="184" y1="29" x2="184" y2="11" stroke="white" stroke-width="2" />
+              <line id="Line 13" x1="208" y1="29" x2="208" y2="15" stroke="white" stroke-width="2" />
+              <line id="Line 17" x1="232" y1="29" x2="232" y2="17" stroke="white" stroke-width="2" />
+              <line id="Line 18" x1="256" y1="29" x2="256" y2="20" stroke="white" stroke-width="2" />
+              <line id="Line 19" x1="280" y1="29" x2="280" y2="23" stroke="white" stroke-width="2" />
+            </g>
+          </g>
+          <g id="Bottom lines decoration">
+            <g id="Bottom lines decoration_2" class="lines-1" filter="url(#filter7_dd_18_91)">
+              <line id="Line 7_2" x1="280" y1="313" x2="280" y2="319" stroke="white" stroke-width="2" />
+              <line id="Line 8_2" x1="256" y1="313" x2="256" y2="322" stroke="white" stroke-width="2" />
+              <line id="Line 9_2" x1="232" y1="313" x2="232" y2="325" stroke="white" stroke-width="2" />
+              <line id="Line 10_2" x1="208" y1="313" x2="208" y2="327" stroke="white" stroke-width="2" />
+              <line id="Line 11_2" x1="184" y1="313" x2="184" y2="331" stroke="white" stroke-width="2" />
+              <line id="Line 12_2" x1="160" y1="313" x2="160" y2="331" stroke="white" stroke-width="2" />
+              <line id="Line 13_2" x1="136" y1="313" x2="136" y2="327" stroke="white" stroke-width="2" />
+              <line id="Line 17_2" x1="112" y1="313" x2="112" y2="325" stroke="white" stroke-width="2" />
+              <line id="Line 18_2" x1="88" y1="313" x2="88" y2="322" stroke="white" stroke-width="2" />
+              <line id="Line 19_2" x1="64" y1="313" x2="64" y2="319" stroke="white" stroke-width="2" />
+            </g>
+          </g>
+          <g id="Bottom lines decoration_3">
+            <g id="Bottom lines decoration_4" class="lines-1" filter="url(#filter8_dd_18_91)">
+              <line id="Line 7_3" x1="29" y1="279" x2="23" y2="279" stroke="white" stroke-width="2" />
+              <line id="Line 8_3" x1="29" y1="255" x2="20" y2="255" stroke="white" stroke-width="2" />
+              <line id="Line 9_3" x1="29" y1="231" x2="17" y2="231" stroke="white" stroke-width="2" />
+              <line id="Line 10_3" x1="29" y1="207" x2="15" y2="207" stroke="white" stroke-width="2" />
+              <line id="Line 11_3" x1="29" y1="183" x2="11" y2="183" stroke="white" stroke-width="2" />
+              <line id="Line 12_3" x1="29" y1="159" x2="11" y2="159" stroke="white" stroke-width="2" />
+              <line id="Line 13_3" x1="29" y1="135" x2="15" y2="135" stroke="white" stroke-width="2" />
+              <line id="Line 17_3" x1="29" y1="111" x2="17" y2="111" stroke="white" stroke-width="2" />
+              <line id="Line 18_3" x1="29" y1="87" x2="20" y2="87" stroke="white" stroke-width="2" />
+              <line id="Line 19_3" x1="29" y1="63" x2="23" y2="63" stroke="white" stroke-width="2" />
+            </g>
+          </g>
+          <g id="Bottom lines decoration_5">
+            <g id="Bottom lines decoration_6" class="lines-1" filter="url(#filter9_dd_18_91)">
+              <line id="Line 7_4" x1="316" y1="61" x2="322" y2="61" stroke="white" stroke-width="2" />
+              <line id="Line 8_4" x1="316" y1="85" x2="325" y2="85" stroke="white" stroke-width="2" />
+              <line id="Line 9_4" x1="316" y1="109" x2="328" y2="109" stroke="white" stroke-width="2" />
+              <line id="Line 10_4" x1="316" y1="133" x2="330" y2="133" stroke="white" stroke-width="2" />
+              <line id="Line 11_4" x1="316" y1="157" x2="334" y2="157" stroke="white" stroke-width="2" />
+              <line id="Line 12_4" x1="316" y1="181" x2="334" y2="181" stroke="white" stroke-width="2" />
+              <line id="Line 13_4" x1="316" y1="205" x2="330" y2="205" stroke="white" stroke-width="2" />
+              <line id="Line 17_4" x1="316" y1="229" x2="328" y2="229" stroke="white" stroke-width="2" />
+              <line id="Line 18_4" x1="316" y1="253" x2="325" y2="253" stroke="white" stroke-width="2" />
+              <line id="Line 19_4" x1="316" y1="277" x2="322" y2="277" stroke="white" stroke-width="2" />
+            </g>
+          </g>
+        </g>
+        <!-- <g id="Line decoration">
           <g id="Top lines decoration">
             <g id="Frame 2" class="lines-1" filter="url(#filter6_d_18_91)">
               <line id="Line 7" x1="64" y1="29" x2="64" y2="23" stroke="white" stroke-width="2" />
@@ -268,7 +327,7 @@ watch(
               <line id="Line 19_8" x1="316" y1="277" x2="322" y2="277" stroke="white" stroke-width="2" />
             </g>
           </g>
-        </g>
+        </g> -->
       </g>
       <defs>
         <filter
@@ -318,99 +377,7 @@ watch(
           <feBlend mode="normal" in2="shape" result="effect1_innerShadow_18_91" />
         </filter>
         <filter
-          id="filter2_d_18_91"
-          x="116.183"
-          y="114.796"
-          width="25.0631"
-          height="25.0631"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset />
-          <feGaussianBlur stdDeviation="3" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
-        </filter>
-        <filter
-          id="filter3_d_18_91"
-          x="116.183"
-          y="201.012"
-          width="25.0631"
-          height="25.0631"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset />
-          <feGaussianBlur stdDeviation="3" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
-        </filter>
-        <filter
-          id="filter4_d_18_91"
-          x="204.141"
-          y="114.796"
-          width="25.0631"
-          height="25.0631"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset />
-          <feGaussianBlur stdDeviation="3" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
-        </filter>
-        <filter
-          id="filter5_d_18_91"
-          x="204.141"
-          y="201.012"
-          width="25.0631"
-          height="25.0631"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset />
-          <feGaussianBlur stdDeviation="3" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
-        </filter>
-        <filter
-          id="filter6_d_18_91"
+          id="filter6_dd_18_91"
           x="52"
           y="-9"
           width="240"
@@ -430,18 +397,6 @@ watch(
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
           <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
-        </filter>
-        <filter
-          id="filter7_d_18_91"
-          x="52"
-          y="-9"
-          width="240"
-          height="49"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -452,11 +407,11 @@ watch(
           <feGaussianBlur stdDeviation="5.5" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
+          <feBlend mode="normal" in2="effect1_dropShadow_18_91" result="effect2_dropShadow_18_91" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_18_91" result="shape" />
         </filter>
         <filter
-          id="filter8_d_18_91"
+          id="filter7_dd_18_91"
           x="52"
           y="302"
           width="240"
@@ -476,18 +431,6 @@ watch(
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
           <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
-        </filter>
-        <filter
-          id="filter9_d_18_91"
-          x="52"
-          y="302"
-          width="240"
-          height="49"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -498,11 +441,11 @@ watch(
           <feGaussianBlur stdDeviation="5.5" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
+          <feBlend mode="normal" in2="effect1_dropShadow_18_91" result="effect2_dropShadow_18_91" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_18_91" result="shape" />
         </filter>
         <filter
-          id="filter10_d_18_91"
+          id="filter8_dd_18_91"
           x="-9"
           y="51"
           width="49"
@@ -522,18 +465,6 @@ watch(
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
           <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
-        </filter>
-        <filter
-          id="filter11_d_18_91"
-          x="-9"
-          y="51"
-          width="49"
-          height="240"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -544,11 +475,11 @@ watch(
           <feGaussianBlur stdDeviation="5.5" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
+          <feBlend mode="normal" in2="effect1_dropShadow_18_91" result="effect2_dropShadow_18_91" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_18_91" result="shape" />
         </filter>
         <filter
-          id="filter12_d_18_91"
+          id="filter9_dd_18_91"
           x="305"
           y="49"
           width="49"
@@ -568,18 +499,6 @@ watch(
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
           <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
-        </filter>
-        <filter
-          id="filter13_d_18_91"
-          x="305"
-          y="49"
-          width="49"
-          height="240"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -590,8 +509,8 @@ watch(
           <feGaussianBlur stdDeviation="5.5" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_18_91" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_18_91" result="shape" />
+          <feBlend mode="normal" in2="effect1_dropShadow_18_91" result="effect2_dropShadow_18_91" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_18_91" result="shape" />
         </filter>
       </defs>
     </svg>

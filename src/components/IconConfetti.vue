@@ -13,7 +13,7 @@ onMounted(() => {
     translateX: () => [0, anime.random(150, 240)],
     scale: () => [0, anime.random(0.8, 1)],
     rotate: () => [0, anime.random(0, 360)],
-    duration: 1000,
+    duration: 600,
     delay: () => anime.random(1200, 1300),
     easing: 'easeOutCubic',
     loop: false,
