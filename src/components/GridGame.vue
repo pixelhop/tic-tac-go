@@ -40,23 +40,23 @@ watch(
       duration: 300,
     });
 
-    anime({
-      targets: '.grid-container',
-      scale: 1.05,
-      // rotate: [anime.random(-2, 2), anime.random(-2, 2), anime.random(-2, 2), anime.random(-2, 2)],
-      // // translateX: [
-      // //   anime.random(-2, 2),
-      // //   anime.random(-2, 2),
-      // //   anime.random(-2, 2),
-      // //   anime.random(-2, 2),
-      // //   anime.random(-2, 2),
-      // //   anime.random(-2, 2),
-      // //   anime.random(-2, 2),
-      // // ],
-      easing: 'easeOutQuad',
-      direction: 'alternate',
-      duration: 50,
-    });
+    // anime({
+    //   targets: '.grid-container',
+    //   scale: 1.05,
+    //   // rotate: [anime.random(-2, 2), anime.random(-2, 2), anime.random(-2, 2), anime.random(-2, 2)],
+    //   // // translateX: [
+    //   // //   anime.random(-2, 2),
+    //   // //   anime.random(-2, 2),
+    //   // //   anime.random(-2, 2),
+    //   // //   anime.random(-2, 2),
+    //   // //   anime.random(-2, 2),
+    //   // //   anime.random(-2, 2),
+    //   // //   anime.random(-2, 2),
+    //   // // ],
+    //   easing: 'easeOutQuad',
+    //   direction: 'alternate',
+    //   duration: 50,
+    // });
   },
   { deep: true }
 );

@@ -15,7 +15,7 @@ onMounted(() => {
     rotate: () => [0, anime.random(0, 360)],
     duration: 1000,
     delay: () => anime.random(1200, 1300),
-    easing: 'easeInOutCubic',
+    easing: 'easeOutCubic',
     loop: false,
   });
 });
