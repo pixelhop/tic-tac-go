@@ -9,7 +9,7 @@
       fill="#FF7615"
       fill-opacity="0.22"
     />
-    <g filter="url(#filter0_d_753_1439)">
+    <g>
       <rect x="22.3097" y="20.8778" width="51" height="3" transform="rotate(45 22.3097 20.8778)" fill="white" />
       <rect x="20.1884" y="56.9402" width="51" height="3" transform="rotate(-45 20.1884 56.9402)" fill="white" />
     </g>
