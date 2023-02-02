@@ -1,13 +1,22 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useClipboard } from '@vueuse/core';
+import { useRouter } from 'vue-router';
+import { onBeforeMount } from 'vue';
 import Heading from '../components/Heading.vue';
 import LayoutDefault from '../layouts/LayoutDefault.vue';
 import Button from '../components/Button.vue';
 import { useGameStore } from '../stores/game';
 
+const router = useRouter();
 const store = useGameStore();
 const { game } = storeToRefs(store);
+
+onBeforeMount(() => {
+  if (!game.value.code) {
+    router.push('/');
+  }
+});
 
 const { copy, copied } = useClipboard({ source: game.value.code });
 </script>

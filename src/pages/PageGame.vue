@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { onBeforeUnmount } from 'vue';
+import { onBeforeMount, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
 import ModalInstructions from '../components/modals/ModalInstructions.vue';
 import ModalCountdown from '../components/modals/ModalCountdown.vue';
 import ModalRoundWinner from '../components/modals/ModalRoundWinner.vue';
@@ -13,8 +14,15 @@ import TurnTimer from '../components/TurnTimer.vue';
 import ModalRoundGameWinner from '../components/modals/ModalRoundGameWinner.vue';
 import ModalDisconnect from '../components/modals/ModalDisconnect.vue';
 
+const router = useRouter();
 const store = useGameStore();
 const { game } = storeToRefs(store);
+
+onBeforeMount(() => {
+  if (!game.value.code) {
+    router.push('/');
+  }
+});
 
 onBeforeUnmount(() => {
   store.disconnect();
