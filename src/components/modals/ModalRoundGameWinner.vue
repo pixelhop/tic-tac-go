@@ -16,11 +16,11 @@ const gameWinner = computed(() => {
   const player1Wins = gameRoundWinners.value.filter((value) => value === 1).length;
   const player2Wins = gameRoundWinners.value.filter((value) => value === 2).length;
 
-  if (player1Wins === 3) {
+  if (player1Wins > player2Wins) {
     return 1;
   }
 
-  if (player2Wins === 3) {
+  if (player2Wins > player1Wins) {
     return 2;
   }
 
@@ -28,10 +28,10 @@ const gameWinner = computed(() => {
 });
 const winnerName = computed(() => (gameWinner.value === 1 ? player1Name.value : player2Name.value));
 
-// Go back to the home screen after 3 seconds
+// Go back to the home screen after 5 seconds
 useTimeoutFn(() => {
   router.push('/');
-}, 3000);
+}, 5000);
 </script>
 
 <template>

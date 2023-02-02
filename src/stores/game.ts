@@ -331,6 +331,12 @@ export const useGameStore = defineStore('game', () => {
           // otherwise show the game winner screen
           const player1Wins = gameRoundWinners.value.filter((value) => value === 1).length;
           const player2Wins = gameRoundWinners.value.filter((value) => value === 2).length;
+
+          console.log({
+            player1Wins,
+            player2Wins,
+            gameRound: gameRound.value,
+          });
           if (gameRound.value < 5 && player1Wins < 3 && player2Wins < 3) {
             nextRound();
           } else {
