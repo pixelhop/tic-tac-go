@@ -6,19 +6,19 @@ import { computed, ref } from 'vue';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { gameCurrentPlayer, gameCurrentGoStart, gameCurrentGoEnd } = storeToRefs(store);
+const { game } = storeToRefs(store);
 
 const goPercentage = ref(0);
 useIntervalFn(() => {
-  if (!gameCurrentGoEnd.value || !gameCurrentGoStart.value) {
+  if (!game.value.currentGoEnd || !game.value.currentGoStart) {
     return;
   }
 
   const originalDuration = Math.abs(
-    dayjs(gameCurrentGoStart.value).diff(dayjs(gameCurrentGoEnd.value), 'milliseconds')
+    dayjs(game.value.currentGoStart).diff(dayjs(game.value.currentGoEnd), 'milliseconds')
   );
 
-  const timeLeft = Math.max(0, dayjs(gameCurrentGoEnd.value).diff(dayjs(), 'milliseconds'));
+  const timeLeft = Math.max(0, dayjs(game.value.currentGoEnd).diff(dayjs(), 'milliseconds'));
 
   goPercentage.value = 1 - timeLeft / originalDuration;
 }, 50);
@@ -29,7 +29,7 @@ const playerColour = computed(() => {
     2: '#FF7615',
   };
 
-  return colourMap[gameCurrentPlayer.value];
+  return colourMap[game.value.currentPlayer];
 });
 </script>
 
@@ -249,7 +249,7 @@ const playerColour = computed(() => {
       </g>
       <defs>
         <filter
-          v-if="gameCurrentPlayer === 1"
+          v-if="game.currentPlayer === 1"
           id="filter0_d_107_88"
           x="0"
           y="0.916107"
@@ -274,7 +274,7 @@ const playerColour = computed(() => {
         </filter>
 
         <filter
-          v-if="gameCurrentPlayer === 2"
+          v-if="game.currentPlayer === 2"
           id="filter0_d_107_88"
           x="0"
           y="0.916107"

@@ -6,7 +6,7 @@ import GridCell from './GridCell.vue';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { grid, gameCurrentPlayer, winningMask } = storeToRefs(store);
+const { grid, game, winningMask } = storeToRefs(store);
 
 const gridContainer = ref<HTMLDivElement>();
 
@@ -16,7 +16,7 @@ const playerColour = computed(() => {
     2: '#FF7615',
   };
 
-  return colourMap[gameCurrentPlayer.value];
+  return colourMap[game.value.currentPlayer];
 });
 
 watch(

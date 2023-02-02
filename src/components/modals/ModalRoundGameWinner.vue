@@ -10,11 +10,11 @@ import { useGameStore } from '../../stores/game';
 
 const router = useRouter();
 const store = useGameStore();
-const { gameRoundWinners, player1Name, player2Name } = storeToRefs(store);
+const { game, player1Name, player2Name } = storeToRefs(store);
 
 const gameWinner = computed(() => {
-  const player1Wins = gameRoundWinners.value.filter((value) => value === 1).length;
-  const player2Wins = gameRoundWinners.value.filter((value) => value === 2).length;
+  const player1Wins = game.value.roundWinners.filter((value) => value === 1).length;
+  const player2Wins = game.value.roundWinners.filter((value) => value === 2).length;
 
   if (player1Wins > player2Wins) {
     return 1;

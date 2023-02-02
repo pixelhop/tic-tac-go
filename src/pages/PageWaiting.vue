@@ -7,9 +7,9 @@ import Button from '../components/Button.vue';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { gameCode } = storeToRefs(store);
+const { game } = storeToRefs(store);
 
-const { copy, copied } = useClipboard({ source: gameCode });
+const { copy, copied } = useClipboard({ source: game.value.code });
 </script>
 
 <template>
@@ -22,7 +22,7 @@ const { copy, copied } = useClipboard({ source: gameCode });
 
       <div class="text-center">
         <p class="text-xs text-gray-400 uppercase mb-1">Game code</p>
-        <p class="text-blue text-xl font-medium uppercase" @click="copy(gameCode)">{{ gameCode }}</p>
+        <p class="text-blue text-xl font-medium uppercase" @click="copy(game.code)">{{ game.code }}</p>
         <p v-if="copied" class="text-xs text-white">Copied!</p>
         <p v-else class="text-xs text-white">click to copy</p>
       </div>

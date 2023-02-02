@@ -16,6 +16,18 @@ type GameState =
   | 'game-winner'
   | 'disconnected';
 type GameGrid = ('x' | '0' | undefined)[];
+
+export interface Game {
+  code: string;
+  round: number;
+  roundStartTime?: string;
+  state: GameState;
+  currentPlayer: 1 | 2;
+  currentGoStart?: string;
+  currentGoEnd?: string;
+  roundWinners: ((1 | 2) | null)[];
+}
+
 const TURN_DURATION = 3000;
 
 const WIN_MASKS = [
@@ -43,14 +55,25 @@ export const useGameStore = defineStore('game', () => {
 
   const imReady = computed(() => (isPlayer1.value ? player1Ready.value : player2Ready.value));
 
-  const gameCode = ref('');
-  const gameRound = ref(1);
-  const gameRoundStartTime = ref<string>();
-  const gameState = ref<GameState>('waiting-for-players');
-  const gameCurrentPlayer = ref<1 | 2>(1);
-  const gameCurrentGoStart = ref<string>();
-  const gameCurrentGoEnd = ref<string>();
-  const gameRoundWinners = ref<((1 | 2) | null)[]>([null, null, null, null, null]);
+  const game = reactive<Game>({
+    code: '',
+    round: 1,
+    roundStartTime: undefined,
+    state: 'waiting-for-players',
+    currentPlayer: 1,
+    currentGoStart: undefined,
+    currentGoEnd: undefined,
+    roundWinners: [null, null, null, null, null],
+  });
+
+  // const gameCode = ref('');
+  // const gameRound = ref(1);
+  // const gameRoundStartTime = ref<string>();
+  // const gameState = ref<GameState>('waiting-for-players');
+  // const gameCurrentPlayer = ref<1 | 2>(1);
+  // const gameCurrentGoStart = ref<string>();
+  // const gameCurrentGoEnd = ref<string>();
+  // const gameRoundWinners = ref<((1 | 2) | null)[]>([null, null, null, null, null]);
 
   const grid = ref<GameGrid>([]);
   const winningMask = computed(() => {
@@ -79,13 +102,14 @@ export const useGameStore = defineStore('game', () => {
 
   async function broadcastState() {
     const payload = {
-      gameRound: gameRound.value,
-      gameRoundStartTime: gameRoundStartTime.value,
-      gameState: gameState.value,
-      gameCurrentPlayer: gameCurrentPlayer.value,
-      gameCurrentGoStart: gameCurrentGoStart.value,
-      gameCurrentGoEnd: gameCurrentGoEnd.value,
-      gameRoundWinners: gameRoundWinners.value,
+      // gameRound: gameRound.value,
+      // gameRoundStartTime: gameRoundStartTime.value,
+      // gameState: gameState.value,
+      // gameCurrentPlayer: gameCurrentPlayer.value,
+      // gameCurrentGoStart: gameCurrentGoStart.value,
+      // gameCurrentGoEnd: gameCurrentGoEnd.value,
+      // gameRoundWinners: gameRoundWinners.value,
+      game,
       grid: grid.value,
     };
 
@@ -100,24 +124,27 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function onReceiveState(state: {
-    gameRound: number;
-    gameRoundStartTime: string;
-    gameState: GameState;
-    gameCurrentPlayer: 1 | 2;
-    gameCurrentGoStart: string;
-    gameCurrentGoEnd: string;
-    gameRoundWinners: ((1 | 2) | null)[];
+    // gameRound: number;
+    // gameRoundStartTime: string;
+    // gameState: GameState;
+    // gameCurrentPlayer: 1 | 2;
+    // gameCurrentGoStart: string;
+    // gameCurrentGoEnd: string;
+    // gameRoundWinners: ((1 | 2) | null)[];
+    game: Game;
     grid: GameGrid;
   }) {
     console.log('Receive state');
     console.log({ state });
-    gameRound.value = state.gameRound;
-    gameState.value = state.gameState;
-    gameRoundStartTime.value = state.gameRoundStartTime;
-    gameCurrentPlayer.value = state.gameCurrentPlayer;
-    gameCurrentGoStart.value = state.gameCurrentGoStart;
-    gameCurrentGoEnd.value = state.gameCurrentGoEnd;
-    gameRoundWinners.value = state.gameRoundWinners;
+    // gameRound.value = state.gameRound;
+    // gameState.value = state.gameState;
+    // gameRoundStartTime.value = state.gameRoundStartTime;
+    // gameCurrentPlayer.value = state.gameCurrentPlayer;
+    // gameCurrentGoStart.value = state.gameCurrentGoStart;
+    // gameCurrentGoEnd.value = state.gameCurrentGoEnd;
+    // gameRoundWinners.value = state.gameRoundWinners;
+
+    Object.assign(game, state.game);
     grid.value = state.grid;
   }
 
@@ -126,7 +153,7 @@ export const useGameStore = defineStore('game', () => {
    * and setup listeners for the events we are interested in
    */
   function connect() {
-    channel.value = supabase.channel(gameCode.value, {
+    channel.value = supabase.channel(game.code, {
       config: {
         presence: {
           key: isPlayer1.value ? 'player1' : 'player2',
@@ -141,7 +168,7 @@ export const useGameStore = defineStore('game', () => {
         console.log({ name: presenceState.player1[0].name });
         player1Name.value = presenceState.player1[0].name;
         player2Name.value = presenceState.player2[0].name;
-        gameState.value = 'instructions';
+        game.state = 'instructions';
         router.push('/game');
       }
     });
@@ -152,7 +179,7 @@ export const useGameStore = defineStore('game', () => {
 
     channel.value.on('presence', { event: 'leave' }, ({ leftPresences }) => {
       console.log('Users have left: ', leftPresences);
-      gameState.value = 'disconnected';
+      game.state = 'disconnected';
     });
 
     channel.value.on('broadcast', { event: 'player-ready' }, ({ payload }) => {
@@ -196,7 +223,7 @@ export const useGameStore = defineStore('game', () => {
    */
   function disconnect() {
     channel.value?.unsubscribe();
-    gameCode.value = '';
+    game.code = '';
     player1Name.value = '';
     player1Connected.value = false;
     player1Ready.value = false;
@@ -214,7 +241,7 @@ export const useGameStore = defineStore('game', () => {
    */
   function newGame(name: string) {
     player1Name.value = name;
-    gameCode.value = uniqueNamesGenerator({
+    game.code = uniqueNamesGenerator({
       dictionaries: [adjectives, colors, animals],
       separator: '-',
       length: 3,
@@ -232,7 +259,7 @@ export const useGameStore = defineStore('game', () => {
    */
   function joinGame(name: string, joinGameCode: string) {
     player2Name.value = name;
-    gameCode.value = joinGameCode.toLowerCase();
+    game.code = joinGameCode.toLowerCase();
     connect();
     router.push('/game');
   }
@@ -268,13 +295,13 @@ export const useGameStore = defineStore('game', () => {
   watch([player1Ready, player2Ready], ([player1ReadyValue, player2ReadyValue]) => {
     if (isPlayer1.value && player1ReadyValue && player2ReadyValue) {
       console.log('Readyyyyy');
-      gameState.value = 'countdown';
-      gameRoundStartTime.value = dayjs().add(5, 'seconds').toISOString();
+      game.state = 'countdown';
+      game.roundStartTime = dayjs().add(5, 'seconds').toISOString();
       broadcastState();
       setTimeout(() => {
-        gameState.value = 'game';
-        gameCurrentGoStart.value = new Date().toISOString();
-        gameCurrentGoEnd.value = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
+        game.state = 'game';
+        game.currentGoStart = new Date().toISOString();
+        game.currentGoEnd = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
         broadcastState();
       }, 5000);
     }
@@ -282,22 +309,22 @@ export const useGameStore = defineStore('game', () => {
 
   function nextRound() {
     grid.value = [];
-    gameRound.value += 1;
-    gameCurrentPlayer.value = (2 - (gameRound.value % 2)) as 1 | 2;
-    gameRoundStartTime.value = dayjs().add(5, 'seconds').toISOString();
-    gameState.value = 'countdown';
+    game.round += 1;
+    game.currentPlayer = (2 - (game.round % 2)) as 1 | 2;
+    game.roundStartTime = dayjs().add(5, 'seconds').toISOString();
+    game.state = 'countdown';
     broadcastState();
     setTimeout(() => {
-      gameState.value = 'game';
-      gameCurrentGoStart.value = new Date().toISOString();
-      gameCurrentGoEnd.value = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
+      game.state = 'game';
+      game.currentGoStart = new Date().toISOString();
+      game.currentGoEnd = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
       broadcastState();
     }, 5000);
   }
 
   function placeMarker(gridIndex: number) {
     // Check it is the current players turn
-    if ((isPlayer1.value && gameCurrentPlayer.value !== 1) || (!isPlayer1.value && gameCurrentPlayer.value !== 2)) {
+    if ((isPlayer1.value && game.currentPlayer !== 1) || (!isPlayer1.value && game.currentPlayer !== 2)) {
       return;
     }
 
@@ -323,27 +350,27 @@ export const useGameStore = defineStore('game', () => {
 
     if (winner) {
       console.log('Winner');
-      gameRoundWinners.value[gameRound.value - 1] = isPlayer1.value ? 1 : 2;
+      game.roundWinners[game.round - 1] = isPlayer1.value ? 1 : 2;
 
       setTimeout(() => {
-        gameState.value = 'round-winner';
+        game.state = 'round-winner';
         broadcastState();
 
         setTimeout(() => {
           // If we have had less than five rounds and no player has won 3 games, start the next round
           // otherwise show the game winner screen
-          const player1Wins = gameRoundWinners.value.filter((value) => value === 1).length;
-          const player2Wins = gameRoundWinners.value.filter((value) => value === 2).length;
+          const player1Wins = game.roundWinners.filter((value) => value === 1).length;
+          const player2Wins = game.roundWinners.filter((value) => value === 2).length;
 
           console.log({
             player1Wins,
             player2Wins,
-            gameRound: gameRound.value,
+            gameRound: game.round,
           });
-          if (gameRound.value < 5 && player1Wins < 3 && player2Wins < 3) {
+          if (game.round < 5 && player1Wins < 3 && player2Wins < 3) {
             nextRound();
           } else {
-            gameState.value = 'game-winner';
+            game.state = 'game-winner';
             broadcastState();
           }
         }, 5000);
@@ -355,14 +382,14 @@ export const useGameStore = defineStore('game', () => {
     if (usedGridCells.length === 9) {
       console.log('Draw');
       setTimeout(() => {
-        gameState.value = 'round-winner';
+        game.state = 'round-winner';
         broadcastState();
 
         setTimeout(() => {
-          if (gameRound.value < 5) {
+          if (game.round < 5) {
             nextRound();
           } else {
-            gameState.value = 'game-winner';
+            game.state = 'game-winner';
             broadcastState();
           }
         }, 5000);
@@ -370,22 +397,22 @@ export const useGameStore = defineStore('game', () => {
     }
 
     // Next go
-    gameCurrentPlayer.value = gameCurrentPlayer.value === 1 ? 2 : 1;
-    gameCurrentGoStart.value = new Date().toISOString();
-    gameCurrentGoEnd.value = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
+    game.currentPlayer = game.currentPlayer === 1 ? 2 : 1;
+    game.currentGoStart = new Date().toISOString();
+    game.currentGoEnd = dayjs().add(TURN_DURATION, 'milliseconds').toISOString();
 
     broadcastState();
   }
 
   useIntervalFn(() => {
     const player = isPlayer1.value ? 1 : 2;
-    if (gameState.value !== 'game' || gameCurrentPlayer.value !== player) {
+    if (game.state !== 'game' || game.currentPlayer !== player) {
       return;
     }
 
     // If our go has ended place a random marker
     const freeIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8].filter((index) => !grid.value[index]);
-    if (dayjs().isAfter(dayjs(gameCurrentGoEnd.value))) {
+    if (dayjs().isAfter(dayjs(game.currentGoEnd))) {
       console.log('Missed turn playing randomly!');
       console.log({ freeIndexes });
       const randomIndex = freeIndexes[Math.floor(Math.random() * freeIndexes.length)];
@@ -407,16 +434,17 @@ export const useGameStore = defineStore('game', () => {
     joinGame,
     disconnect,
     ready,
-    gameCode,
-    gameState,
-    gameRound,
-    gameRoundStartTime,
-    gameCurrentPlayer,
-    gameCurrentGoStart,
-    gameCurrentGoEnd,
-    gameRoundWinners,
+    // gameCode,
+    // gameState,
+    // gameRound,
+    // gameRoundStartTime,
+    // gameCurrentPlayer,
+    // gameCurrentGoStart,
+    // gameCurrentGoEnd,
+    // gameRoundWinners,
     winningMask,
     // state,
+    game,
     grid,
     placeMarker,
   };

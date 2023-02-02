@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import Modal from '../Modal.vue';
 import Button from '../Button.vue';

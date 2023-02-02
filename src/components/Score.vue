@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { gameRoundWinners } = storeToRefs(store);
+const { game } = storeToRefs(store);
 </script>
 
 <template>
@@ -11,7 +11,7 @@ const { gameRoundWinners } = storeToRefs(store);
     <h4 class="uppercase font-medium text-white tracking-[0.25em] mb-1">Score</h4>
     <div class="flex gap-2 mb-2">
       <div
-        v-for="(round, index) in gameRoundWinners"
+        v-for="(round, index) in game.roundWinners"
         :key="index"
         class="h-4 w-4"
         :class="{
