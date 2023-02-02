@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import dayjs from 'dayjs';
-import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
+import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 import { useIntervalFn } from '@vueuse/core';
 import { computed, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
@@ -30,6 +30,9 @@ export interface Game {
 
 const TURN_DURATION = 3000;
 
+/**
+ * The below masks represent all the winning combinations possible
+ */
 const WIN_MASKS = [
   [true, true, true, false, false, false, false, false, false],
   [false, false, false, true, true, true, false, false, false],
@@ -55,27 +58,23 @@ export const useGameStore = defineStore('game', () => {
 
   const imReady = computed(() => (isPlayer1.value ? player1Ready.value : player2Ready.value));
 
-  const game = reactive<Game>({
-    code: '',
-    round: 1,
-    roundStartTime: undefined,
-    state: 'waiting-for-players',
-    currentPlayer: 1,
-    currentGoStart: undefined,
-    currentGoEnd: undefined,
-    roundWinners: [null, null, null, null, null],
-  });
+  function initGameState(): Game {
+    return {
+      code: '',
+      round: 1,
+      roundStartTime: undefined,
+      state: 'waiting-for-players',
+      currentPlayer: 1,
+      currentGoStart: undefined,
+      currentGoEnd: undefined,
+      roundWinners: [null, null, null, null, null],
+    };
+  }
 
-  // const gameCode = ref('');
-  // const gameRound = ref(1);
-  // const gameRoundStartTime = ref<string>();
-  // const gameState = ref<GameState>('waiting-for-players');
-  // const gameCurrentPlayer = ref<1 | 2>(1);
-  // const gameCurrentGoStart = ref<string>();
-  // const gameCurrentGoEnd = ref<string>();
-  // const gameRoundWinners = ref<((1 | 2) | null)[]>([null, null, null, null, null]);
+  const game = reactive<Game>(initGameState());
 
   const grid = ref<GameGrid>([]);
+
   const winningMask = computed(() => {
     // Test X
     const winningXMask = WIN_MASKS.find((mask) =>
@@ -100,15 +99,12 @@ export const useGameStore = defineStore('game', () => {
 
   const channel = ref<RealtimeChannel>();
 
+  /**
+   * Broadcast the current game state to the
+   * other player
+   */
   async function broadcastState() {
     const payload = {
-      // gameRound: gameRound.value,
-      // gameRoundStartTime: gameRoundStartTime.value,
-      // gameState: gameState.value,
-      // gameCurrentPlayer: gameCurrentPlayer.value,
-      // gameCurrentGoStart: gameCurrentGoStart.value,
-      // gameCurrentGoEnd: gameCurrentGoEnd.value,
-      // gameRoundWinners: gameRoundWinners.value,
       game,
       grid: grid.value,
     };
@@ -123,27 +119,13 @@ export const useGameStore = defineStore('game', () => {
     });
   }
 
-  function onReceiveState(state: {
-    // gameRound: number;
-    // gameRoundStartTime: string;
-    // gameState: GameState;
-    // gameCurrentPlayer: 1 | 2;
-    // gameCurrentGoStart: string;
-    // gameCurrentGoEnd: string;
-    // gameRoundWinners: ((1 | 2) | null)[];
-    game: Game;
-    grid: GameGrid;
-  }) {
+  /**
+   * Recieve game state from the other player and update our local state
+   * @param state
+   */
+  function onReceiveState(state: { game: Game; grid: GameGrid }) {
     console.log('Receive state');
     console.log({ state });
-    // gameRound.value = state.gameRound;
-    // gameState.value = state.gameState;
-    // gameRoundStartTime.value = state.gameRoundStartTime;
-    // gameCurrentPlayer.value = state.gameCurrentPlayer;
-    // gameCurrentGoStart.value = state.gameCurrentGoStart;
-    // gameCurrentGoEnd.value = state.gameCurrentGoEnd;
-    // gameRoundWinners.value = state.gameRoundWinners;
-
     Object.assign(game, state.game);
     grid.value = state.grid;
   }
@@ -194,14 +176,14 @@ export const useGameStore = defineStore('game', () => {
       }
     });
 
+    // Listen for updates to the grid
     channel.value.on('broadcast', { event: 'grid' }, (event) => {
       console.log('Update grid');
-      console.log({ event });
-      console.log(event.payload.grid);
       grid.value = event.payload.grid;
-      console.log(grid.value);
+      console.log({ grid: grid.value });
     });
 
+    // List for state broadcasts
     channel.value.on('broadcast', { event: 'state' }, (event) => {
       onReceiveState(event.payload);
     });
@@ -231,6 +213,9 @@ export const useGameStore = defineStore('game', () => {
     player2Name.value = '';
     player2Connected.value = false;
     player2Ready.value = false;
+
+    Object.assign(game, initGameState());
+    grid.value = [];
   }
 
   /**
