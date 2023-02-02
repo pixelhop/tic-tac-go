@@ -26,21 +26,23 @@ const join = handleSubmit(() => {
 
 <template>
   <LayoutDefault>
-    <div class="py-12 px-6 flex flex-col justify-between h-full">
-      <Heading class="text-center">Join game</Heading>
+    <form class="h-full" @submit="join">
+      <div class="py-12 px-6 flex flex-col justify-between h-full">
+        <Heading class="text-center">Join game</Heading>
 
-      <form class="space-y-4" @submit="join">
-        <InputText name="name" label="Enter player name:" />
-        <InputText name="code" label="Enter game code:" />
-      </form>
+        <div class="space-y-4">
+          <InputText name="name" label="Enter player name:" />
+          <InputText name="code" label="Enter game code:" />
+        </div>
 
-      <div class="flex justify-between">
-        <Button as="router-link" to="/" theme="secondary"><IconChevron class="h-5 rotate-180 mr-2" /> Back</Button>
-        <Button :disabled="!values.name || !values.code || !!Object.keys(errors).length" @click="join"
-          >Next <IconChevron class="h-5 ml-2"
-        /></Button>
+        <div class="flex justify-between">
+          <Button as="router-link" to="/" theme="secondary"><IconChevron class="h-5 rotate-180 mr-2" /> Back</Button>
+          <Button :disabled="!values.name || !values.code || !!Object.keys(errors).length" type="submit"
+            >Next <IconChevron class="h-5 ml-2"
+          /></Button>
+        </div>
       </div>
-    </div>
+    </form>
   </LayoutDefault>
 </template>
 

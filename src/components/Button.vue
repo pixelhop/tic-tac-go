@@ -6,11 +6,13 @@ const props = withDefaults(
     theme?: 'primary' | 'secondary';
     as?: 'button' | 'router-link';
     disabled?: boolean;
+    type?: 'button' | 'submit';
   }>(),
   {
     theme: 'primary',
     as: 'button',
     disabled: false,
+    type: 'button',
   }
 );
 
@@ -36,6 +38,7 @@ const classes = computed(() => {
     :is="as"
     class="font-medium text-sm text-white border uppercase px-4 py-1 transition-colors appearance-none text-center flex items-center justify-center"
     :class="classes"
+    :type="type"
     ><slot></slot
   ></component>
 </template>
