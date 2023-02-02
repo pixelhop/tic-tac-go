@@ -4,6 +4,7 @@ import PageNewGame from './pages/PageNewGame.vue';
 import PageWaiting from './pages/PageWaiting.vue';
 import PageJoinGame from './pages/PageJoinGame.vue';
 import PageGame from './pages/PageGame.vue';
+import PageAbout from './pages/PageAbout.vue';
 
 const routes = [
   { path: '/', component: PageHome },
@@ -11,6 +12,7 @@ const routes = [
   { path: '/waiting', component: PageWaiting },
   { path: '/join-game', component: PageJoinGame },
   { path: '/game', component: PageGame },
+  { path: '/about', component: PageAbout },
 ];
 
 // 3. Create the router instance and pass the `routes` option

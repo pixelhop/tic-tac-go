@@ -19,7 +19,7 @@ import Button from '../components/Button.vue';
     <div class="h-full flex flex-col px-24 space-y-4 justify-center">
       <Button class="button-animation" as="router-link" to="/new-game">New game</Button>
       <Button class="button-animation" as="router-link" to="/join-game">Join game</Button>
-      <Button class="button-animation">About</Button>
+      <Button as="router-link" to="/about" class="button-animation">About</Button>
     </div>
   </LayoutDefault>
 </template>
