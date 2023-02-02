@@ -307,16 +307,19 @@ export const useGameStore = defineStore('game', () => {
       return;
     }
 
+    // Check someone hasn't already won
+    if (winningMask.value) {
+      return;
+    }
+
     // Logic to check if its the players turn
     const marker = isPlayer1.value ? '0' : 'x';
     grid.value[gridIndex] = marker;
-    console.log({ marker });
 
     // Test for a win
     const winner = WIN_MASKS.some((mask) =>
       mask.every((shouldMatch, index) => (shouldMatch ? grid.value[index] === marker : true))
     );
-    console.log({ grid: grid.value });
 
     if (winner) {
       console.log('Winner');
@@ -356,12 +359,15 @@ export const useGameStore = defineStore('game', () => {
         broadcastState();
 
         setTimeout(() => {
-          nextRound();
+          if (gameRound.value < 5) {
+            nextRound();
+          } else {
+            gameState.value = 'game-winner';
+            broadcastState();
+          }
         }, 5000);
       }, 2000);
     }
-
-    console.log({ winner });
 
     // Next go
     gameCurrentPlayer.value = gameCurrentPlayer.value === 1 ? 2 : 1;
