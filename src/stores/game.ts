@@ -7,7 +7,14 @@ import { useRouter } from 'vue-router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '../supabase';
 
-type GameState = 'waiting-for-players' | 'instructions' | 'countdown' | 'game' | 'round-winner' | 'game-winner';
+type GameState =
+  | 'waiting-for-players'
+  | 'instructions'
+  | 'countdown'
+  | 'game'
+  | 'round-winner'
+  | 'game-winner'
+  | 'disconnected';
 type GameGrid = ('x' | '0' | undefined)[];
 const TURN_DURATION = 3000;
 
@@ -145,6 +152,7 @@ export const useGameStore = defineStore('game', () => {
 
     channel.value.on('presence', { event: 'leave' }, ({ leftPresences }) => {
       console.log('Users have left: ', leftPresences);
+      gameState.value = 'disconnected';
     });
 
     channel.value.on('broadcast', { event: 'player-ready' }, ({ payload }) => {

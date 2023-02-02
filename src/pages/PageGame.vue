@@ -11,6 +11,7 @@ import Players from '../components/Players.vue';
 import { useGameStore } from '../stores/game';
 import TurnTimer from '../components/TurnTimer.vue';
 import ModalRoundGameWinner from '../components/modals/ModalRoundGameWinner.vue';
+import ModalDisconnect from '../components/modals/ModalDisconnect.vue';
 
 const store = useGameStore();
 const { gameState } = storeToRefs(store);
@@ -38,6 +39,7 @@ onBeforeUnmount(() => {
     <ModalCountdown v-else-if="gameState === 'countdown'" />
     <ModalRoundWinner v-if="gameState === 'round-winner'" />
     <ModalRoundGameWinner v-else-if="gameState === 'game-winner'" />
+    <ModalDisconnect v-else-if="gameState === 'disconnected'" />
   </LayoutDefault>
 </template>
 
