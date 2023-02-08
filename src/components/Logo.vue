@@ -48,7 +48,7 @@ function animateIn() {
     opacity: [0, 1],
     easing: 'easeOutCubic',
     duration: 300,
-    delay: 800 + 100,
+    delay: 900,
   });
 
   anime
